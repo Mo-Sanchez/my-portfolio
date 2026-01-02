@@ -1,0 +1,612 @@
+/* =========================
+   0) GLOBAL + RESET
+   ========================= */
+* {
+  box-sizing: border-box;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease,
+    filter 0.18s ease;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0b0f17;
+  color: #e8eefc;
+  line-height: 1.6;
+}
+
+/* subtle background life */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 450px at 12% 10%, rgba(156, 198, 255, 0.08), transparent 60%),
+    radial-gradient(700px 380px at 85% 25%, rgba(126, 231, 135, 0.06), transparent 60%),
+    radial-gradient(900px 500px at 50% 92%, rgba(189, 147, 249, 0.06), transparent 60%);
+  z-index: 0;
+}
+
+/* =========================
+   1) LAYOUT
+   ========================= */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 16px;
+}
+
+.section {
+  margin-top: 34px;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  margin: 0 0 14px 0;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+}
+
+/* =========================
+   2) HEADER
+   ========================= */
+.header {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+}
+
+/* subtle shimmer */
+.header::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background: radial-gradient(
+    520px 220px at 20% 0%,
+    rgba(156, 198, 255, 0.06),
+    transparent 60%
+  );
+  opacity: 0;
+}
+
+.header:hover::before {
+  opacity: 1;
+}
+
+.headerText {
+  flex: 1;
+}
+
+.subtitle {
+  margin: 8px 0 14px 0;
+  color: #7ee787;
+  font-weight: 700;
+}
+
+.bio {
+  margin: 0 0 18px 0;
+  max-width: 62ch;
+  color: rgba(232, 238, 252, 0.78);
+}
+
+.ctaRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* profile image */
+.profileImg {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profileImg:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================
+   3) BUTTONS + ICON ACTIONS
+   ========================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #e8eefc;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn.secondary {
+  color: rgba(232, 238, 252, 0.86);
+}
+
+/* header icons */
+.headerIcons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.headerIcons a {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.headerIcons a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120px 120px at 30% 20%,
+    rgba(156, 198, 255, 0.12),
+    transparent 60%
+  );
+  opacity: 0;
+}
+
+.headerIcons img {
+  width: 22px;
+  height: 22px;
+  opacity: 0.9;
+}
+
+.headerIcons a:hover {
+  transform: translateY(-2px) scale(1.05);
+  border-color: rgba(156, 198, 255, 0.35);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.headerIcons a:hover::after {
+  opacity: 1;
+}
+
+.headerIcons a:hover img {
+  opacity: 1;
+  filter: brightness(1.15);
+}
+
+/* =========================
+   4) PROJECTS GRID + CARDS
+   ========================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* soft sheen */
+.card::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -60%;
+  width: 160%;
+  height: 160%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(156, 198, 255, 0.06),
+    transparent
+  );
+  transform: rotate(12deg);
+  opacity: 0;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(156, 198, 255, 0.35);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.cardTitle {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+}
+
+.cardDesc {
+  margin: 0 0 12px 0;
+  color: rgba(232, 238, 252, 0.78);
+}
+
+.cardMeta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* =========================
+   Project Card Pills – Direct Hover
+   ========================= */
+.cardMeta .pill {
+  position: relative;
+  overflow: hidden;
+}
+
+/* soft glow layer */
+.cardMeta .pill::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: radial-gradient(
+    120px 60px at 30% 20%,
+    rgba(232, 238, 252, 0.10),
+    transparent 60%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* lift + glow */
+.cardMeta .pill:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* activate shimmer */
+.cardMeta .pill:hover::after {
+  opacity: 1;
+}
+
+/* subtle “press” */
+.cardMeta .pill:active {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* pill hover stays stronger */
+.cardMeta .pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+
+
+/* tiny “pop” on the title + links when card hovered */
+.card:hover .cardTitle {
+  color: rgba(232, 238, 252, 0.98);
+}
+
+.card:hover .cardLinks a {
+  color: #cfe2ff;
+}
+
+.cardLinks {
+  display: flex;
+  gap: 14px;
+}
+
+.cardLinks a {
+  position: relative;
+  text-decoration: none;
+  font-weight: 700;
+  color: #9cc6ff;
+}
+
+.cardLinks a:hover {
+  color: #cfe2ff;
+}
+
+.cardLinks a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+}
+
+.cardLinks a:hover::after {
+  width: 100%;
+}
+
+
+/* =========================
+   5) SKILLS
+   ========================= */
+.skills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.pill.frontend {
+  border-color: rgba(156, 198, 255, 0.5);
+  color: #9cc6ff;
+  background: rgba(156, 198, 255, 0.08);
+}
+
+.pill.backend {
+  border-color: rgba(126, 231, 135, 0.5);
+  color: #7ee787;
+  background: rgba(126, 231, 135, 0.08);
+}
+
+.pill.database {
+  border-color: rgba(255, 193, 92, 0.5);
+  color: #ffc15c;
+  background: rgba(255, 193, 92, 0.08);
+}
+
+.pill.tools {
+  border-color: rgba(189, 147, 249, 0.5);
+  color: #bd93f9;
+  background: rgba(189, 147, 249, 0.08);
+}
+
+/* =========================
+   6) EDUCATION
+   ========================= */
+.educationTimeline {
+  position: relative;
+  margin-top: 14px;
+  padding: 16px 16px 2px 40px;
+  max-width: 700px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.educationTimeline::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.eduItem {
+  padding-bottom: 14px;
+}
+
+.eduContent strong {
+  font-size: 1.05rem;
+}
+
+.eduMeta {
+  margin-top: 4px;
+  font-size: 0.92rem;
+  color: rgba(232, 238, 252, 0.70);
+}
+
+/* =========================
+   7) CERTIFICATES
+   ========================= */
+.certificates {
+  list-style: none;
+  padding: 16px;
+  max-width: 700px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.certificates li {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.certificates li:first-child {
+  border-top: none;
+}
+
+.certificates li::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-top: 7px;
+  border-radius: 999px;
+  background: rgba(126, 231, 135, 0.9);
+  box-shadow: 0 0 0 4px rgba(126, 231, 135, 0.10);
+}
+
+.certificates li:hover {
+  transform: translateX(2px);
+}
+
+/* =========================
+   8) FOOTER
+   ========================= */
+.footer {
+  margin-top: 34px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footerText {
+  color: rgba(232, 238, 252, 0.7);
+}
+
+/* =========================
+   9) RESPONSIVE
+   ========================= */
+@media (max-width: 820px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profileImg {
+    width: 200px;
+    height: 200px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.grid:hover .card {
+  opacity: 0.6;
+}
+
+.grid:hover .card:hover {
+  opacity: 1;
+}
+
+
+.pill {
+  position: relative;
+  overflow: hidden;
+}
+
+.pill::before {
+  content: "";
+  position: absolute;
+  left: -10%;
+  bottom: -60%;
+  width: 120%;
+  height: 120%;
+  background: rgba(255, 255, 255, 0.06);
+  transform: rotate(6deg);
+  opacity: 0;
+}
+
+.pill:hover::before {
+  bottom: -20%;
+  opacity: 1;
+}
+
+
+
+.section > * {
+  animation: simpleFade 0.8s ease backwards;
+}
+@keyframes simpleFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* This targets children and adds delay automatically */
+.section > *:nth-child(1) { animation-delay: 0.05s; }
+.section > *:nth-child(2) { animation-delay: 0.1s; }
+.section > *:nth-child(3) { animation-delay: 0.2s; }
+
+
+body {
+  background-image: 
+    linear-gradient(rgba(156, 197, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(156, 197, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: grid-move 20s linear infinite;
+}
+@keyframes grid-move {
+  from { background-position: 0 0; }
+  to { background-position: 50px 50px; }
+}
+
+
+.subtitle {
+  background: linear-gradient(90deg, #7ee787, #9cc6ff, #bd93f9, #7ee787);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: wave 8s linear infinite;
+}
+@keyframes wave { to { background-position: 200% center; } }
+
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cardDesc {
+  margin: 0 0 12px 0;
+}
+
+.cardMeta {
+  margin-top: auto;
+}
+
+.cardLinks {
+  margin-top: 12px;
+}
+
+
