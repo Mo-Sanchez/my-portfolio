@@ -1,0 +1,102 @@
+.resumeName {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.zoomLevel {
+  min-width: 44px;
+  height: 26px;
+  border-radius: 6px;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.zoomLevel:hover {
+  background: var(--raised-2);
+}
+
+.resumeDownload {
+  margin-left: 4px;
+  min-height: 30px;
+}
+
+.resumeBody {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #525a56;
+}
+:root[data-theme="light"] .resumeBody {
+  background: #c9d0cc;
+}
+
+.resumeFrame {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: transparent;
+}
+
+.resumeLoading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  background: rgb(var(--surface-rgb));
+  color: var(--ink-2);
+  font-size: 13px;
+}
+
+.resumeCard {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+}
+.resumeDoc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: min(440px, 100%);
+  padding: 28px 24px;
+  border-radius: var(--radius-lg);
+  background: rgb(var(--surface-rgb));
+  box-shadow: var(--shadow-float);
+  text-align: center;
+}
+.resumeFacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin: 14px 0 18px;
+  text-align: left;
+}
+.resumeFacts li {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--raised);
+  font-size: 13.5px;
+}
+.resumeFacts .faint {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@container (max-width: 520px) {
+  .resumeName {
+    display: none;
+  }
+}

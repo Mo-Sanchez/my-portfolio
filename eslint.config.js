@@ -20,4 +20,11 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Project convention for MoOS code: use plain conditionals, not `a ? b : c`.
+    files: ['src/os/**/*.{ts,tsx}', 'src/main.tsx'],
+    rules: {
+      'no-ternary': 'error',
+    },
+  },
 ])

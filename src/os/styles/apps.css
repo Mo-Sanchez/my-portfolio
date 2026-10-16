@@ -1,0 +1,279 @@
+/* =========================================================
+   Shared application layout primitives.
+   App-specific styles live next to each app and load with it.
+   Apps respond to their window width via container queries,
+   so the same layout works in a narrow window and on a phone.
+   ========================================================= */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.appRow {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.appScroll {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.appToolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 46px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+  background: var(--raised);
+}
+
+.toolbarSpacer {
+  flex: 1;
+}
+
+.toolbarGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.toolbarDivider {
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background: var(--line-strong);
+}
+
+.appSidebar {
+  flex: none;
+  width: 196px;
+  padding: 12px 8px;
+  border-right: 1px solid var(--line);
+  background: rgb(var(--title-rgb) / 0.45);
+  overflow-y: auto;
+}
+
+.sideHeading {
+  padding: 10px 10px 5px;
+  color: var(--ink-3);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sideHeading:first-child {
+  padding-top: 2px;
+}
+
+.sideItem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 5px 9px;
+  border-radius: 7px;
+  color: var(--ink);
+  font-size: 13px;
+  text-align: left;
+  text-decoration: none;
+  transition: background var(--dur-1) var(--ease);
+}
+.sideItem:hover {
+  background: var(--raised-2);
+}
+.sideItem.isActive {
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+.sideItem svg {
+  flex: none;
+}
+
+/* Reading pages */
+.page {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 30px 34px 44px;
+}
+
+.pageHeader {
+  margin-bottom: 26px;
+}
+.pageHeader .eyebrow {
+  margin-bottom: 8px;
+}
+.pageTitle {
+  font-size: 27px;
+  font-weight: 680;
+  letter-spacing: -0.022em;
+}
+.pageLead {
+  margin-top: 10px;
+  max-width: 64ch;
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.pageSection {
+  margin-top: 34px;
+  scroll-margin-top: 16px;
+}
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 16px;
+  font-weight: 650;
+}
+.sectionTitle::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.card {
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--raised);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+.metricCard {
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: linear-gradient(160deg, var(--accent-soft), transparent 70%), var(--raised);
+}
+.metricValue {
+  display: block;
+  color: var(--ink);
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.metricLabel {
+  display: block;
+  margin-top: 2px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.metricDetail {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.linkRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.notePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink-3);
+  font-size: 12.5px;
+}
+
+.emptyState {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  padding: 40px 20px;
+  color: var(--ink-2);
+  text-align: center;
+}
+
+/* Timeline (Experience and About) */
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 22px;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(var(--accent-line), var(--line));
+}
+.timelineItem {
+  position: relative;
+  padding: 8px 0 10px;
+}
+.timelineItem::before {
+  content: "";
+  position: absolute;
+  left: -21px;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgb(var(--surface-rgb));
+  border: 2px solid var(--accent);
+}
+.timelineDate {
+  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.timelineTitle {
+  font-weight: 620;
+  font-size: 14.5px;
+}
+.timelineMeta {
+  color: var(--ink-2);
+  font-size: 13px;
+}
+
+@container (max-width: 620px) {
+  .page {
+    padding: 22px 18px 34px;
+  }
+  .pageTitle {
+    font-size: 23px;
+  }
+  .appSidebar {
+    display: none;
+  }
+}

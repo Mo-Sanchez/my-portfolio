@@ -1,0 +1,159 @@
+.emailCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: linear-gradient(140deg, var(--accent-soft), transparent 65%), var(--raised);
+}
+.emailIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.emailText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.emailAddress {
+  overflow: hidden;
+  font-size: 17px;
+  font-weight: 640;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.emailAddress:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.emailActions {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+.contactLinks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+.contactLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--raised);
+  text-decoration: none;
+  transition:
+    background var(--dur-1) var(--ease),
+    transform var(--dur-1) var(--ease);
+}
+.contactLink:hover {
+  background: var(--raised-2);
+  transform: translateY(-1px);
+}
+.contactLink > span {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.contactLinkTitle {
+  font-weight: 620;
+}
+.contactLinkSub {
+  color: var(--ink-3);
+  font-size: 12px;
+}
+.contactExt {
+  color: var(--ink-3);
+}
+
+.composeForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field label {
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.field[data-invalid] .input,
+.field[data-invalid] .textarea {
+  border-color: var(--danger);
+}
+.fieldError {
+  color: var(--danger);
+  font-size: 12.5px;
+}
+.composeFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.composeNote {
+  font-size: 12.5px;
+  max-width: 42ch;
+}
+.composeSent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  font-size: 13px;
+}
+.composeSent svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--accent);
+}
+
+.contactMeta {
+  margin-top: 28px;
+  font-size: 12.5px;
+}
+
+@container (max-width: 600px) {
+  .emailCard {
+    flex-wrap: wrap;
+  }
+  .emailActions {
+    width: 100%;
+  }
+  .emailActions > * {
+    flex: 1;
+  }
+  .contactLinks,
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+  .composeFooter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

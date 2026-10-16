@@ -1,0 +1,315 @@
+/* =========================================================
+   Mobile shell: home screen with app grid, full-screen apps
+   ========================================================= */
+.mobileShell {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  --m-status: 44px;
+}
+
+.mStatus {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--m-status) + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) 18px 0 22px;
+  color: #f4f7f5;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.4);
+  transition:
+    background var(--dur-2) var(--ease),
+    color var(--dur-2) var(--ease);
+}
+.mStatus.onApp {
+  background: rgb(var(--title-rgb));
+  color: var(--ink);
+  text-shadow: none;
+}
+.mTime {
+  font-size: 15px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.mStatusRight {
+  display: flex;
+  gap: 4px;
+}
+.mStatusBtn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+.mStatusBtn:active {
+  background: rgb(255 255 255 / 0.15);
+}
+
+/* Home screen */
+.mHome {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--m-status) + env(safe-area-inset-top) + 4px) 16px calc(120px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.mDate {
+  margin: 2px 6px 10px;
+  color: #f4f7f5;
+  font-size: 14px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+}
+
+.mWidget {
+  padding: 16px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-float);
+  animation: popIn var(--dur-3) var(--ease-out) both;
+}
+.mWidgetId {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mAvatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--accent-line);
+}
+.mName {
+  font-size: 20px;
+  font-weight: 700;
+}
+.mRole {
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.35;
+}
+.mHeadline {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.mWidget .statusPill {
+  margin-top: 10px;
+}
+.mWidgetActions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+}
+.mWidgetActions .btn {
+  min-height: 40px;
+  border-radius: 12px;
+}
+
+.mSectionLabel {
+  margin: 0 6px 6px;
+  color: #f4f7f5;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+}
+.mRecents {
+  margin-top: 16px;
+}
+.mRecentList {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.mRecent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 7px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 560;
+  white-space: nowrap;
+}
+
+.mGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px 8px;
+  margin-top: 22px;
+}
+.mApp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+.mAppIcon {
+  width: min(60px, 17vw);
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.3));
+  transition: transform var(--dur-1) var(--ease);
+}
+.mApp:active .mAppIcon {
+  transform: scale(0.9);
+}
+.mAppLabel {
+  color: #f4f7f5;
+  font-size: 12px;
+  font-weight: 560;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.6);
+  white-space: nowrap;
+}
+
+.mDock {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  z-index: 10;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 8px;
+  border-radius: 28px;
+  box-shadow: var(--shadow-float);
+}
+.mDockItem {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--dur-1) var(--ease);
+}
+.mDockItem:active {
+  transform: scale(0.9);
+}
+
+/* Full-screen app */
+.mScreen {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--m-status) + env(safe-area-inset-top));
+  background: rgb(var(--surface-rgb));
+}
+.mScreen.isVisible {
+  animation: mScreenIn var(--dur-3) var(--ease-out);
+}
+.mScreen.isClosing {
+  animation: mScreenOut var(--dur-2) var(--ease) both;
+  pointer-events: none;
+}
+.mScreen[hidden] {
+  display: none;
+}
+
+@keyframes mScreenIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(16px);
+  }
+}
+@keyframes mScreenOut {
+  to {
+    opacity: 0;
+    transform: scale(0.94) translateY(16px);
+  }
+}
+
+.mScreenBar {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 46px;
+  padding: 0 8px;
+  background: rgb(var(--title-rgb));
+  border-bottom: 1px solid var(--line);
+}
+.mScreenTitle {
+  max-width: 52vw;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 650;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mBarBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  justify-self: start;
+  height: 36px;
+  padding: 0 8px 0 2px;
+  border-radius: 10px;
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 560;
+}
+.mBarClose {
+  justify-self: end;
+  width: 36px;
+  padding: 0;
+  justify-content: center;
+  color: var(--ink-2);
+}
+
+.mScreenBody {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  container-type: inline-size;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Overlays on phones */
+.mobileShell .toasts {
+  top: calc(var(--m-status) + env(safe-area-inset-top) + 6px);
+  left: 12px;
+  right: 12px;
+  width: auto;
+}
+.mobileShell .launcherBackdrop {
+  padding-top: calc(var(--m-status) + env(safe-area-inset-top) + 8px);
+  background: rgb(6 12 10 / 0.35);
+}
+.launcher.isMobile .launcherResults {
+  max-height: calc(100dvh - 220px);
+}
+.launcher.isMobile .launcherFooter {
+  display: none;
+}
+
+/* Wider phones in landscape and small tablets */
+@media (min-width: 560px) {
+  .mHome {
+    padding-left: max(24px, calc((100% - 560px) / 2));
+    padding-right: max(24px, calc((100% - 560px) / 2));
+  }
+  .mGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .mDock {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    gap: 18px;
+    padding: 10px 18px;
+  }
+}
