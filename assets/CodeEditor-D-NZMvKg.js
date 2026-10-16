@@ -1,5 +1,5 @@
-import{r as x,j as i}from"./index-C5-7-11d.js";import{c as v,D as B,X as _,k as G,e as Y,m as U,b as X,E as K}from"./MoOS-CmOF8Yng.js";import"./content-B9E831KQ.js";const J=new Set("import export from default as const let var function return if else for while do switch case break continue new delete typeof instanceof in of class extends super this null undefined true false try catch finally throw async await yield type interface enum implements private public protected readonly static declare keyof satisfies void".split(" ")),V=/^@[\w-]+/;function d(n,o,a){if(!o)return;const e=n[n.length-1];e&&e.type===a?e.text+=o:n.push({text:o,type:a})}function R(n,o,a){let e=o+1;for(;e<n.length;)if(n[e]==="\\")e+=2;else{if(n[e]===a)return e+1;e++}return n.length}function A(n){for(let o=n.length-1;o>=0;o--)if(n[o].text.trim())return n[o]}function q(n,o,a){const e=[];let t=0;for(;t<n.length;){if(o.mode==="block"){const r=n.indexOf("*/",t);if(r===-1)return d(e,n.slice(t),"comment"),e;d(e,n.slice(t,r+2),"comment"),t=r+2,o.mode="code";continue}if(o.mode==="template"){let r=t;for(;r<n.length&&n[r]!=="`";)n[r]==="\\"&&r++,r++;if(r>=n.length)return d(e,n.slice(t),"string"),e;d(e,n.slice(t,r+1),"string"),t=r+1,o.mode="code";continue}const l=n.slice(t),s=n[t],p=/^\s+/.exec(l);if(p){d(e,p[0],"plain"),t+=p[0].length;continue}if(l.startsWith("//"))return d(e,l,"comment"),e;if(l.startsWith("/*")){o.mode="block",d(e,"/*","comment"),t+=2;continue}if(s==='"'||s==="'"){const r=R(n,t,s);d(e,n.slice(t,r),"string"),t=r;continue}if(s==="`"){o.mode="template",d(e,"`","string"),t+=1;continue}const m=/^(0[xob][\da-f_]+n?|\d[\d_]*(\.\d+)?(e[+-]?\d+)?n?|\.\d+)/i.exec(l);if(m){d(e,m[0],"number"),t+=m[0].length;continue}if(a&&s==="<"){const r=/^<\/?([A-Za-z][\w.]*)/.exec(l),u=A(e),g=u&&(u.type==="plain"||u.type==="number"||u.text.endsWith(")"));if(r&&!g){const w=r[0].length-r[1].length;d(e,r[0].slice(0,w),"punctuation"),d(e,r[1],"tag"),t+=r[0].length;continue}}const f=/^[A-Za-z_$][\w$]*/.exec(l);if(f){const r=f[0],u=n.slice(t+r.length),g=A(e);let w="plain";g&&g.text.endsWith(".")&&g.type==="punctuation"?(w="property",/^\s*\(/.test(u)&&(w="function")):J.has(r)?w="keyword":/^\s*(<[^>]*>)?\s*\(/.test(u)&&!(g&&g.text==="new")?w="function":/^[A-Z]/.test(r)?w="type":/^\??:(?!:)/.test(u)&&(w="property"),d(e,r,w),t+=r.length;continue}/[{}()[\];,.]/.test(s)?d(e,s,"punctuation"):d(e,s,"operator"),t+=1}return e}function Z(n,o){const a=[];let e=0;for(;e<n.length;){if(o.mode==="block"){const u=n.indexOf("*/",e);if(u===-1)return d(a,n.slice(e),"comment"),a;d(a,n.slice(e,u+2),"comment"),e=u+2,o.mode="code";continue}const t=n.slice(e),l=n[e],s=/^\s+/.exec(t);if(s){d(a,s[0],"plain"),e+=s[0].length;continue}if(t.startsWith("/*")){o.mode="block",d(a,"/*","comment"),e+=2;continue}if(l==='"'||l==="'"){const u=R(n,e,l);d(a,n.slice(e,u),"string"),e=u;continue}const p=V.exec(t);if(p){d(a,p[0],"keyword"),e+=p[0].length;continue}const m=/^#[\da-f]{3,8}\b/i.exec(t);if(m&&o.depth>0){d(a,m[0],"number"),e+=m[0].length;continue}const f=/^-?(\d*\.)?\d+(%|[a-z]+)?/i.exec(t);if(f){d(a,f[0],"number"),e+=f[0].length;continue}const r=/^-*[A-Za-z_][\w-]*/.exec(t);if(r){const u=r[0],g=n.slice(e+u.length),w=g.indexOf("{"),k=g.indexOf(";"),b=n[e-1],I=w!==-1&&(k===-1||w<k)&&b!=="(";let h="plain";/^\(/.test(g)?h="function":I||o.depth===0&&/^\s*,?\s*$/.test(g)?b==="."||b==="#"?h="type":b===":"?h="keyword":h="tag":/^\s*:/.test(g)&&(h="property"),d(a,u,h),e+=u.length;continue}l==="{"&&(o.depth+=1),l==="}"&&(o.depth=Math.max(0,o.depth-1)),/[{}()[\];,.:#]/.test(l)?d(a,l,"punctuation"):d(a,l,"operator"),e+=1}return a}function Q(n,o){const a={mode:"code",depth:0};return n.split(`
-`).map(e=>{const t=e.replace(/\r$/,"");try{return o==="css"?Z(t,a):q(t,a,o==="tsx")}catch{return[{text:t,type:"plain"}]}})}function ee(n){return n.endsWith(".tsx")?"tsx":n.endsWith(".css")?"css":n.endsWith(".ts")?"ts":"js"}const ne=`// Generates the built-in MoOS wallpapers as layered SVG landscapes:
+import{r as y,j as i}from"./index-BwXiJ8m-.js";import{f as v,L as B,X as _,C as G,j as U,q as Y,b as X,I as q}from"./MoOS-1Q70qyt3.js";import"./content-LFv2O4KT.js";const K=new Set("import export from default as const let var function return if else for while do switch case break continue new delete typeof instanceof in of class extends super this null undefined true false try catch finally throw async await yield type interface enum implements private public protected readonly static declare keyof satisfies void".split(" ")),V=/^@[\w-]+/;function d(n,o,a){if(!o)return;const e=n[n.length-1];e&&e.type===a?e.text+=o:n.push({text:o,type:a})}function N(n,o,a){let e=o+1;for(;e<n.length;)if(n[e]==="\\")e+=2;else{if(n[e]===a)return e+1;e++}return n.length}function A(n){for(let o=n.length-1;o>=0;o--)if(n[o].text.trim())return n[o]}function J(n,o,a){const e=[];let t=0;for(;t<n.length;){if(o.mode==="block"){const r=n.indexOf("*/",t);if(r===-1)return d(e,n.slice(t),"comment"),e;d(e,n.slice(t,r+2),"comment"),t=r+2,o.mode="code";continue}if(o.mode==="template"){let r=t;for(;r<n.length&&n[r]!=="`";)n[r]==="\\"&&r++,r++;if(r>=n.length)return d(e,n.slice(t),"string"),e;d(e,n.slice(t,r+1),"string"),t=r+1,o.mode="code";continue}const l=n.slice(t),s=n[t],p=/^\s+/.exec(l);if(p){d(e,p[0],"plain"),t+=p[0].length;continue}if(l.startsWith("//"))return d(e,l,"comment"),e;if(l.startsWith("/*")){o.mode="block",d(e,"/*","comment"),t+=2;continue}if(s==='"'||s==="'"){const r=N(n,t,s);d(e,n.slice(t,r),"string"),t=r;continue}if(s==="`"){o.mode="template",d(e,"`","string"),t+=1;continue}const m=/^(0[xob][\da-f_]+n?|\d[\d_]*(\.\d+)?(e[+-]?\d+)?n?|\.\d+)/i.exec(l);if(m){d(e,m[0],"number"),t+=m[0].length;continue}if(a&&s==="<"){const r=/^<\/?([A-Za-z][\w.]*)/.exec(l),u=A(e),g=u&&(u.type==="plain"||u.type==="number"||u.text.endsWith(")"));if(r&&!g){const w=r[0].length-r[1].length;d(e,r[0].slice(0,w),"punctuation"),d(e,r[1],"tag"),t+=r[0].length;continue}}const h=/^[A-Za-z_$][\w$]*/.exec(l);if(h){const r=h[0],u=n.slice(t+r.length),g=A(e);let w="plain";g&&g.text.endsWith(".")&&g.type==="punctuation"?(w="property",/^\s*\(/.test(u)&&(w="function")):K.has(r)?w="keyword":/^\s*(<[^>]*>)?\s*\(/.test(u)&&!(g&&g.text==="new")?w="function":/^[A-Z]/.test(r)?w="type":/^\??:(?!:)/.test(u)&&(w="property"),d(e,r,w),t+=r.length;continue}/[{}()[\];,.]/.test(s)?d(e,s,"punctuation"):d(e,s,"operator"),t+=1}return e}function Z(n,o){const a=[];let e=0;for(;e<n.length;){if(o.mode==="block"){const u=n.indexOf("*/",e);if(u===-1)return d(a,n.slice(e),"comment"),a;d(a,n.slice(e,u+2),"comment"),e=u+2,o.mode="code";continue}const t=n.slice(e),l=n[e],s=/^\s+/.exec(t);if(s){d(a,s[0],"plain"),e+=s[0].length;continue}if(t.startsWith("/*")){o.mode="block",d(a,"/*","comment"),e+=2;continue}if(l==='"'||l==="'"){const u=N(n,e,l);d(a,n.slice(e,u),"string"),e=u;continue}const p=V.exec(t);if(p){d(a,p[0],"keyword"),e+=p[0].length;continue}const m=/^#[\da-f]{3,8}\b/i.exec(t);if(m&&o.depth>0){d(a,m[0],"number"),e+=m[0].length;continue}const h=/^-?(\d*\.)?\d+(%|[a-z]+)?/i.exec(t);if(h){d(a,h[0],"number"),e+=h[0].length;continue}const r=/^-*[A-Za-z_][\w-]*/.exec(t);if(r){const u=r[0],g=n.slice(e+u.length),w=g.indexOf("{"),k=g.indexOf(";"),b=n[e-1],I=w!==-1&&(k===-1||w<k)&&b!=="(";let f="plain";/^\(/.test(g)?f="function":I||o.depth===0&&/^\s*,?\s*$/.test(g)?b==="."||b==="#"?f="type":b===":"?f="keyword":f="tag":/^\s*:/.test(g)&&(f="property"),d(a,u,f),e+=u.length;continue}l==="{"&&(o.depth+=1),l==="}"&&(o.depth=Math.max(0,o.depth-1)),/[{}()[\];,.:#]/.test(l)?d(a,l,"punctuation"):d(a,l,"operator"),e+=1}return a}function Q(n,o){const a={mode:"code",depth:0};return n.split(`
+`).map(e=>{const t=e.replace(/\r$/,"");try{return o==="css"?Z(t,a):J(t,a,o==="tsx")}catch{return[{text:t,type:"plain"}]}})}function ee(n){return n.endsWith(".tsx")?"tsx":n.endsWith(".css")?"css":n.endsWith(".ts")?"ts":"js"}const ne=`// Generates the built-in MoOS wallpapers as layered SVG landscapes:
 // misty pine ridges that fade into fog, drawn far to near.
 //
 //   node scripts/generate-wallpapers.mjs
@@ -255,11 +255,10 @@ export const profile = {
   github: "https://github.com/Mo-Sanchez",
   linkedin: "https://www.linkedin.com/in/moises-sanchez-/",
   resume: \`\${import.meta.env.BASE_URL}Moises_Sanchez_Resume.pdf\`,
-  headline: "I build software that makes large-scale operations faster, cheaper, and easier to run.",
+  headline: "I like coding.",
   intro:
     "Computer Science graduate from the University of Florida with five years inside Amazon Air's operations. " +
     "I find the manual, error-prone parts of a workflow, measure them, and replace them with tools people actually use.",
-  status: "Open to software engineering, TPM, and technical program roles",
 };
 
 export type Metric = { value: string; label: string; detail: string };
@@ -463,7 +462,7 @@ export const navLinks = [
   { id: "skills", label: "Skills" },
   { id: "contact", label: "Contact" },
 ];
-`,ie=`// The MoOS virtual filesystem. Files, the Terminal, and the Reader all read
+`,ie=`// The MoOS virtual filesystem. Projects, the Terminal, and the Reader all read
 // from this one tree, and every file is generated from src/data/content.ts so
 // there is a single source of truth for portfolio facts.
 
@@ -557,8 +556,6 @@ export function aboutText() {
     ...about.paragraphs.flatMap((p) => [p, ""]),
     "Focus",
     ...about.focus.map((f) => \`  • \${f.title}: \${f.text}\`),
-    "",
-    \`Status: \${profile.status}\`,
   ].join("\\n");
 }
 
@@ -604,12 +601,13 @@ function readmeText() {
     "in React and TypeScript. Everything here is real portfolio content.",
     "",
     "Quick start",
-    "  • Projects live in ~/projects. Open any project file for details.",
-    "  • The résumé is in ~/documents/resume.pdf.",
+    "  • Start with the Home window. It's always the first icon in the dock.",
+    "  • Everything opens with a single click: dock icons, desktop icons, project files.",
+    "  • Close a window with × to go back to the one before.",
     "  • Press Ctrl+K (⌘K on Mac) to search apps, projects, and skills.",
-    "  • In Terminal, type \`help\` to see every command.",
+    "  • Terminal, Code, and Browser are under More in the dock. In Terminal, type \`help\`.",
     "",
-    "Prefer a simple page? Add ?view=classic to the address.",
+    "Prefer a regular page? Click Simple view in the menu bar.",
   ].join("\\n");
 }
 
@@ -831,7 +829,7 @@ export function buildIndex(): SearchItem[] {
   }
 
   const sections: [string, string, OSAction, string][] = [
-    ["All Projects", "Browse every project in Files", { type: "open", appId: "finder", route: "projects" }, "work portfolio built"],
+    ["All Projects", "Browse every project by category", { type: "open", appId: "finder", route: "projects" }, "work portfolio built"],
     ["Skills", "Languages, frameworks, and tools", { type: "open", appId: "about", route: "skills" }, "tech stack toolkit"],
     ["Education", about.education.map((e) => e.credential).join(" · "), { type: "open", appId: "about", route: "education" }, "school university degree college uf"],
     ["Certifications", about.certifications.map((c) => c.name).join(" · "), { type: "open", appId: "about", route: "education" }, "aws cloud certified"],
@@ -1029,10 +1027,12 @@ function WindowFrame({ win, focused, z }: { win: WindowState; focused: boolean; 
   // Move keyboard focus into the window when it becomes active.
   useEffect(() => {
     const el = ref.current;
-    if (focused && !win.minimized && el && !el.contains(document.activeElement)) {
+    // Windows opened by the page itself on load stay quiet, so a keyboard
+    // visitor's first Tab still reaches the skip link.
+    if (focused && !win.minimized && !win.quiet && el && !el.contains(document.activeElement)) {
       el.focus({ preventScroll: true });
     }
-  }, [focused, win.minimized]);
+  }, [focused, win.minimized, win.quiet]);
 
   const track = (onMove: (ev: PointerEvent) => void, onEnd: () => void) => {
     const end = (ev?: PointerEvent) => {
@@ -1278,7 +1278,12 @@ export default memo(WindowFrame);
 
 export type Target = { appId: string; route: string };
 
+// The Home window lives at the bare URL, so landing on the site doesn't add a
+// history entry and Back from any window returns to it.
+export const HOME: Target = { appId: "home", route: "" };
+
 const legacy: Record<string, Target> = {
+  home: HOME,
   about: { appId: "about", route: "" },
   experience: { appId: "experience", route: "" },
   projects: { appId: "finder", route: "projects" },
@@ -1305,8 +1310,16 @@ export function parseHash(hash: string): Target | null {
   return { appId, route: parts.slice(1).join("/") };
 }
 
+// Like parseHash, but a URL with no hash at all means Home.
+export function targetOfHash(hash: string): Target | null {
+  if (hash === "" || hash === "#") return HOME;
+  return parseHash(hash);
+}
+
+// "" means the bare URL (Home); "#/" is the empty desktop.
 export function formatHash(target: Target | null) {
   if (!target) return "#/";
+  if (sameTarget(target, HOME)) return "";
   const route = target.route
     .split("/")
     .filter(Boolean)
@@ -1319,6 +1332,12 @@ export function formatHash(target: Target | null) {
 export function sameTarget(a: Target | null, b: Target | null) {
   if (a === null || b === null) return a === b;
   return a.appId === b.appId && a.route === b.route;
+}
+
+// A URL for history.pushState/replaceState: an empty hash drops the hash entirely.
+export function hrefOf(hash: string) {
+  if (hash) return hash;
+  return window.location.pathname + window.location.search;
 }
 `,ae=`// Window manager state. Pure reducer so it can be unit tested without a DOM.
 //
@@ -1339,6 +1358,12 @@ export type WindowState = {
   maximized: boolean;
   snap: Snap;
   closing: boolean;
+  // Hidden automatically by single-window mode (not by the visitor), so it
+  // comes back when the window that replaced it closes.
+  parked: boolean;
+  // Opened by the page on load rather than by the visitor: it doesn't take
+  // keyboard focus until the visitor focuses it.
+  quiet?: boolean;
 };
 
 export type WMState = {
@@ -1349,8 +1374,18 @@ export type WMState = {
 };
 
 export type WMAction =
-  | { type: "open"; id: string; appId: string; route: string; title: string; rect: Rect; maximized?: boolean }
-  | { type: "focus"; id: string }
+  | {
+      type: "open";
+      id: string;
+      appId: string;
+      route: string;
+      title: string;
+      rect: Rect;
+      maximized?: boolean;
+      solo?: boolean;
+      quiet?: boolean;
+    }
+  | { type: "focus"; id: string; solo?: boolean }
   | { type: "blur" }
   | { type: "minimize"; id: string }
   | { type: "close"; id: string }
@@ -1384,6 +1419,31 @@ function raise(order: string[], id: string) {
   return [...order.filter((o) => o !== id), id];
 }
 
+// Minimize every visible window except \`id\` (single-window mode).
+function hideOthers(windows: Record<string, WindowState>, id: string) {
+  const out: Record<string, WindowState> = {};
+  for (const [key, w] of Object.entries(windows)) {
+    if (key !== id && !w.minimized && !w.closing) out[key] = { ...w, minimized: true, parked: true };
+    else out[key] = w;
+  }
+  return out;
+}
+
+// The window to bring back when \`excludeId\` closes: the most recent one that
+// single-window mode put away.
+function topParked(state: WMState, excludeId: string) {
+  for (let i = state.order.length - 1; i >= 0; i--) {
+    const id = state.order[i];
+    const w = state.windows[id];
+    if (id !== excludeId && w && w.parked && w.minimized && !w.closing) return id;
+  }
+  return null;
+}
+
+function othersVisible(state: WMState, id: string) {
+  return state.order.some((o) => o !== id && !state.windows[o].minimized && !state.windows[o].closing);
+}
+
 function update(state: WMState, id: string, patch: Partial<WindowState>): WMState {
   const w = state.windows[id];
   if (!w) return state;
@@ -1414,32 +1474,47 @@ export function wmReducer(state: WMState, action: WMAction): WMState {
         maximized: Boolean(action.maximized),
         snap: "none",
         closing: false,
+        parked: false,
+        quiet: action.quiet,
       };
-      return { windows: { ...state.windows, [id]: win }, order: raise(state.order, id), focused: id };
+      let windows = { ...state.windows, [id]: win };
+      if (action.solo) windows = hideOthers(windows, id);
+      return { windows, order: raise(state.order, id), focused: id };
     }
     case "focus": {
       const w = state.windows[action.id];
       if (!w || w.closing) return state;
       const isTop = state.order[state.order.length - 1] === action.id;
-      if (state.focused === action.id && !w.minimized && isTop) return state;
-      const next = update(state, action.id, { minimized: false });
-      return { ...next, order: raise(state.order, action.id), focused: action.id };
+      const settled = state.focused === action.id && !w.minimized && isTop;
+      if (settled && !(action.solo && othersVisible(state, action.id))) return state;
+      const next = update(state, action.id, { minimized: false, parked: false, quiet: false });
+      let windows = next.windows;
+      if (action.solo) windows = hideOthers(windows, action.id);
+      return { windows, order: raise(state.order, action.id), focused: action.id };
     }
     case "blur":
       if (state.focused === null) return state;
       return { ...state, focused: null };
     case "minimize": {
       if (!state.windows[action.id]) return state;
-      const next = update(state, action.id, { minimized: true });
+      const next = update(state, action.id, { minimized: true, parked: false });
       let focused = state.focused;
       if (focused === action.id) focused = topVisible(state, action.id);
       return { ...next, focused };
     }
     case "close": {
       if (!state.windows[action.id]) return state;
-      const next = update(state, action.id, { closing: true });
+      let next = update(state, action.id, { closing: true });
       let focused = state.focused;
-      if (focused === action.id) focused = topVisible(state, action.id);
+      if (focused === action.id) {
+        focused = topVisible(state, action.id);
+        // Closing the only window on screen returns to the one it replaced.
+        const back = topParked(state, action.id);
+        if (!focused && back) {
+          next = update(next, back, { minimized: false, parked: false });
+          focused = back;
+        }
+      }
       return { ...next, focused };
     }
     case "remove": {
@@ -1457,13 +1532,13 @@ export function wmReducer(state: WMState, action: WMAction): WMState {
       if (!w) return state;
       let maximized = !w.maximized;
       if (w.snap !== "none") maximized = true;
-      const next = update(state, action.id, { maximized, snap: "none", minimized: false });
+      const next = update(state, action.id, { maximized, snap: "none", minimized: false, parked: false });
       return { ...next, order: raise(state.order, action.id), focused: action.id };
     }
     case "snap": {
       const w = state.windows[action.id];
       if (!w) return state;
-      const next = update(state, action.id, { snap: action.side, maximized: false, minimized: false });
+      const next = update(state, action.id, { snap: action.side, maximized: false, minimized: false, parked: false });
       return { ...next, order: raise(state.order, action.id), focused: action.id };
     }
     case "move": {
@@ -1683,7 +1758,7 @@ const commands: Command[] = [
     usage: "whoami",
     description: "Who built this",
     run: () => ({
-      lines: [accent(profile.name), text(profile.role), muted(\`\${profile.location} · \${profile.status}\`)],
+      lines: [accent(profile.name), text(profile.role), muted(profile.location)],
     }),
   },
   {
@@ -1830,7 +1905,7 @@ const commands: Command[] = [
       const parts = resolvePath(state.cwd, target);
       const node = getNode(parts);
       if (node && node.kind === "folder") {
-        return { lines: [muted(\`Opening \${displayPath(parts)} in Files…\`)], effects: [{ type: "open", appId: "finder", route: parts.join("/") }] };
+        return { lines: [muted(\`Opening \${displayPath(parts)}…\`)], effects: [{ type: "open", appId: "finder", route: parts.join("/") }] };
       }
       if (node && node.kind === "file") {
         if ("url" in node.open) return { lines: [muted(\`Opening \${node.open.url}…\`)], effects: [{ type: "url", url: node.open.url }] };
@@ -1939,7 +2014,7 @@ const commands: Command[] = [
     hidden: true,
     run: () => ({
       lines: [
-        accent(\`Excellent choice. \${profile.name} is \${profile.status.charAt(0).toLowerCase()}\${profile.status.slice(1)}.\`),
+        accent(\`Excellent choice. Here's how to reach \${profile.name}.\`),
         { kind: "link", text: "Email     ", label: profile.email, href: \`mailto:\${profile.email}\` },
         { kind: "link", text: "LinkedIn  ", label: profile.linkedin, href: profile.linkedin },
         muted("Run 'resume' to see the résumé."),
@@ -2380,6 +2455,6 @@ export function languageOf(path: string): Language {
   if (path.endsWith(".ts")) return "ts";
   return "js";
 }
-`,de=[{path:"src/os/state/windows.ts",note:"Pure reducer behind the window manager: focus, stacking, minimize, maximize, and snapping.",code:ae},{path:"src/os/shell/Window.tsx",note:"Window frame with pointer-driven dragging, eight-way resizing, and edge snapping.",code:se},{path:"src/os/state/router.ts",note:"Hash-based deep links that work on GitHub Pages and keep old #anchors alive.",code:re},{path:"src/os/fs.ts",note:"Virtual filesystem shared by Files, Terminal, and Reader, generated from portfolio content.",code:ie},{path:"src/os/search.ts",note:"Launcher index and ranking across apps, projects, skills, and actions.",code:oe},{path:"src/os/apps/terminal/commands.ts",note:"Pure command interpreter for the Terminal, with tab completion and typo suggestions.",code:le},{path:"src/os/apps/editor/highlight.ts",note:"The tokenizer coloring the code you're reading right now.",code:ce},{path:"src/data/content.ts",note:"Single source of truth for every portfolio fact in MoOS.",code:te},{path:"scripts/generate-wallpapers.mjs",note:"Procedural generator for the layered misty-forest wallpapers.",code:ne}],M=de.map(n=>({...n,code:n.code.replace(/\r\n/g,`
-`),language:ee(n.path)}));function j(n){return M.find(o=>o.path===n)}function pe(n=M){const o={name:"",path:"",children:[]};for(const e of n){const t=e.path.split("/");let l=o;t.forEach((s,p)=>{const m=t.slice(0,p+1).join("/");let f=l.children.find(r=>r.name===s);f||(f={name:s,path:m,children:[]},l.children.push(f)),p===t.length-1&&(f.file=e),l=f})}const a=e=>{let t=e;for(;!t.file&&t.children.length===1&&!t.children[0].file&&t.name;){const s=t.children[0];t={...s,name:`${t.name}/${s.name}`}}const l=t.children.map(a).sort((s,p)=>{const m=+!!s.file,f=+!!p.file;return m-f||s.name.localeCompare(p.name)});return{...t,children:l}};return a(o)}const N=M[0].path,ue={ts:"TypeScript",tsx:"TypeScript JSX",js:"JavaScript",css:"CSS"};function $(n){return n.split("/").pop()||n}function E({path:n}){const o=n.split(".").pop()||"";let a="JS";return o==="ts"&&(a="TS"),o==="tsx"&&(a="TSX"),o==="css"&&(a="CSS"),i.jsx("span",{className:v("edBadge",`edBadge-${o}`),children:a})}function z({node:n,depth:o,active:a,collapsed:e,onToggle:t,onOpen:l}){return i.jsx("ul",{className:"edTree",role:o===0&&"tree"||"group","aria-label":o===0&&"Source files"||void 0,children:n.children.map(s=>{const p={paddingLeft:8+o*12};if(s.file){const r=s.file;return i.jsx("li",{role:"none",children:i.jsxs("button",{type:"button",role:"treeitem","aria-selected":a===r.path,className:v("edNode",a===r.path&&"isActive"),style:p,onClick:()=>l(r),title:r.path,children:[i.jsx(E,{path:r.path}),i.jsx("span",{className:"edNodeName",children:s.name})]})},s.path)}const m=!e.has(s.path);let f=X;return m&&(f=K),i.jsxs("li",{role:"none",children:[i.jsxs("button",{type:"button",role:"treeitem","aria-expanded":m,className:"edNode edFolder",style:p,onClick:()=>t(s.path),children:[i.jsx(f,{width:13,height:13}),i.jsx("span",{className:"edNodeName",children:s.name})]}),m&&i.jsx(z,{node:s,depth:o+1,active:a,collapsed:e,onToggle:t,onOpen:l})]},s.path)})})}function me({file:n}){const o=x.useMemo(()=>Q(n.code,n.language),[n]),[a,e]=x.useState(null),t=`${String(o.length).length+1}ch`;return i.jsx("div",{className:"edCode",role:"region","aria-label":`${$(n.path)} source, read-only`,tabIndex:0,children:i.jsx("div",{className:"edLines",style:{"--gutter":t},children:o.map((l,s)=>i.jsxs("div",{className:v("edLine",a===s&&"isCurrent"),onClick:()=>e(s),children:[i.jsx("span",{className:"edNum","aria-hidden":"true",children:s+1}),i.jsxs("code",{className:"edText",children:[l.map((p,m)=>p.type==="plain"?p.text:i.jsx("span",{className:`tok-${p.type}`,children:p.text},m)),l.length===0&&" "]})]},s))})})}function we({route:n,setRoute:o}){const a=j(n)?.path||N,[e,t]=x.useState([a]),[l,s]=x.useState(a),[p,m]=x.useState(n),[f,r]=x.useState(()=>new Set),[u,g]=x.useState(!1),[w,k]=x.useState(!1),b=x.useRef(0),I=x.useMemo(()=>pe(),[]);if(n!==p){m(n);const c=j(n);c&&(s(c.path),e.includes(c.path)||t([...e,c.path]))}x.useEffect(()=>()=>window.clearTimeout(b.current),[]);const h=j(l),C=c=>{e.includes(c.path)||t([...e,c.path]),s(c.path),g(!1),m(c.path),o(c.path)},W=c=>{const y=e.indexOf(c),L=e.filter(H=>H!==c);if(t(L),c!==l)return;const S=L[Math.min(y,L.length-1)];S?(s(S),m(S),o(S)):(s(""),m(""),o(""))},F=c=>{const y=new Set(f);y.has(c)?y.delete(c):y.add(c),r(y)},O=async()=>{!h||!await Y(h.code)||(k(!0),window.clearTimeout(b.current),b.current=window.setTimeout(()=>k(!1),1600))};let T=G,P="Copy";w&&(T=U,P="Copied");const D=h?.code.split(`
-`).length||0;return i.jsx("div",{className:v("app editor",u&&"explorerOpen"),children:i.jsxs("div",{className:"appRow",children:[i.jsxs("nav",{className:"edExplorer","aria-label":"Explorer",children:[i.jsx("p",{className:"sideHeading",children:"Explorer · my-portfolio"}),i.jsx(z,{node:I,depth:0,active:l,collapsed:f,onToggle:F,onOpen:C}),i.jsx("p",{className:"edExplorerNote",children:"Real source from this site, bundled at build time. Read-only."})]}),u&&i.jsx("button",{type:"button",className:"edScrim","aria-label":"Close explorer",onClick:()=>g(!1)}),i.jsxs("div",{className:"edMain",children:[i.jsxs("div",{className:"edTabs",children:[i.jsx("button",{type:"button",className:"iconBtn edExplorerToggle","aria-label":"Toggle explorer","aria-expanded":u,onClick:()=>g(c=>!c),children:i.jsx(B,{})}),i.jsx("div",{className:"edTabList",role:"group","aria-label":"Open files",children:e.map(c=>i.jsxs("div",{className:v("edTab",c===l&&"isActive"),children:[i.jsxs("button",{type:"button","aria-current":c===l&&"true"||void 0,className:"edTabLabel",onClick:()=>{const y=j(c);y&&C(y)},title:c,children:[i.jsx(E,{path:c}),$(c)]}),i.jsx("button",{type:"button",className:"edTabClose","aria-label":`Close ${$(c)}`,onClick:()=>W(c),children:i.jsx(_,{width:12,height:12})})]},c))}),h&&i.jsxs("button",{type:"button",className:"btn btnGhost edCopy",onClick:O,"aria-live":"polite",children:[i.jsx(T,{width:14,height:14}),P]})]}),h&&i.jsxs(i.Fragment,{children:[i.jsxs("div",{className:"edCrumbs",children:[i.jsx("span",{className:"edPath",children:h.path.split("/").join(" › ")}),i.jsx("span",{className:"edNote",children:h.note})]}),i.jsx(me,{file:h},h.path),i.jsxs("footer",{className:"edStatus",children:[i.jsx("span",{children:ue[h.language]}),i.jsxs("span",{children:[D," lines"]}),i.jsx("span",{className:"edStatusSpacer"}),i.jsx("span",{children:"Read-only"}),i.jsx("span",{children:"UTF-8"}),i.jsx("span",{children:"LF"})]})]}),!h&&i.jsxs("div",{className:"emptyState edEmpty",children:[i.jsx("p",{children:"No file open."}),i.jsxs("button",{type:"button",className:"btn",onClick:()=>C(M[0]),children:["Open ",$(N)]})]})]})]})})}export{we as default};
+`,de=[{path:"src/os/state/windows.ts",note:"Pure reducer behind the window manager: focus, stacking, minimize, maximize, and snapping.",code:ae},{path:"src/os/shell/Window.tsx",note:"Window frame with pointer-driven dragging, eight-way resizing, and edge snapping.",code:se},{path:"src/os/state/router.ts",note:"Hash-based deep links that work on GitHub Pages and keep old #anchors alive.",code:re},{path:"src/os/fs.ts",note:"Virtual filesystem shared by Projects, Terminal, and Reader, generated from portfolio content.",code:ie},{path:"src/os/search.ts",note:"Launcher index and ranking across apps, projects, skills, and actions.",code:oe},{path:"src/os/apps/terminal/commands.ts",note:"Pure command interpreter for the Terminal, with tab completion and typo suggestions.",code:le},{path:"src/os/apps/editor/highlight.ts",note:"The tokenizer coloring the code you're reading right now.",code:ce},{path:"src/data/content.ts",note:"Single source of truth for every portfolio fact in MoOS.",code:te},{path:"scripts/generate-wallpapers.mjs",note:"Procedural generator for the layered misty-forest wallpapers.",code:ne}],M=de.map(n=>({...n,code:n.code.replace(/\r\n/g,`
+`),language:ee(n.path)}));function j(n){return M.find(o=>o.path===n)}function pe(n=M){const o={name:"",path:"",children:[]};for(const e of n){const t=e.path.split("/");let l=o;t.forEach((s,p)=>{const m=t.slice(0,p+1).join("/");let h=l.children.find(r=>r.name===s);h||(h={name:s,path:m,children:[]},l.children.push(h)),p===t.length-1&&(h.file=e),l=h})}const a=e=>{let t=e;for(;!t.file&&t.children.length===1&&!t.children[0].file&&t.name;){const s=t.children[0];t={...s,name:`${t.name}/${s.name}`}}const l=t.children.map(a).sort((s,p)=>{const m=+!!s.file,h=+!!p.file;return m-h||s.name.localeCompare(p.name)});return{...t,children:l}};return a(o)}const R=M[0].path,ue={ts:"TypeScript",tsx:"TypeScript JSX",js:"JavaScript",css:"CSS"};function $(n){return n.split("/").pop()||n}function z({path:n}){const o=n.split(".").pop()||"";let a="JS";return o==="ts"&&(a="TS"),o==="tsx"&&(a="TSX"),o==="css"&&(a="CSS"),i.jsx("span",{className:v("edBadge",`edBadge-${o}`),children:a})}function E({node:n,depth:o,active:a,collapsed:e,onToggle:t,onOpen:l}){return i.jsx("ul",{className:"edTree",role:o===0&&"tree"||"group","aria-label":o===0&&"Source files"||void 0,children:n.children.map(s=>{const p={paddingLeft:8+o*12};if(s.file){const r=s.file;return i.jsx("li",{role:"none",children:i.jsxs("button",{type:"button",role:"treeitem","aria-selected":a===r.path,className:v("edNode",a===r.path&&"isActive"),style:p,onClick:()=>l(r),title:r.path,children:[i.jsx(z,{path:r.path}),i.jsx("span",{className:"edNodeName",children:s.name})]})},s.path)}const m=!e.has(s.path);let h=X;return m&&(h=q),i.jsxs("li",{role:"none",children:[i.jsxs("button",{type:"button",role:"treeitem","aria-expanded":m,className:"edNode edFolder",style:p,onClick:()=>t(s.path),children:[i.jsx(h,{width:13,height:13}),i.jsx("span",{className:"edNodeName",children:s.name})]}),m&&i.jsx(E,{node:s,depth:o+1,active:a,collapsed:e,onToggle:t,onOpen:l})]},s.path)})})}function me({file:n}){const o=y.useMemo(()=>Q(n.code,n.language),[n]),[a,e]=y.useState(null),t=`${String(o.length).length+1}ch`;return i.jsx("div",{className:"edCode",role:"region","aria-label":`${$(n.path)} source, read-only`,tabIndex:0,children:i.jsx("div",{className:"edLines",style:{"--gutter":t},children:o.map((l,s)=>i.jsxs("div",{className:v("edLine",a===s&&"isCurrent"),onClick:()=>e(s),children:[i.jsx("span",{className:"edNum","aria-hidden":"true",children:s+1}),i.jsxs("code",{className:"edText",children:[l.map((p,m)=>p.type==="plain"?p.text:i.jsx("span",{className:`tok-${p.type}`,children:p.text},m)),l.length===0&&" "]})]},s))})})}function we({route:n,setRoute:o}){const a=j(n)?.path||R,[e,t]=y.useState([a]),[l,s]=y.useState(a),[p,m]=y.useState(n),[h,r]=y.useState(()=>new Set),[u,g]=y.useState(!1),[w,k]=y.useState(!1),b=y.useRef(0),I=y.useMemo(()=>pe(),[]);if(n!==p){m(n);const c=j(n);c&&(s(c.path),e.includes(c.path)||t([...e,c.path]))}y.useEffect(()=>()=>window.clearTimeout(b.current),[]);const f=j(l),C=c=>{e.includes(c.path)||t([...e,c.path]),s(c.path),g(!1),m(c.path),o(c.path)},W=c=>{const x=e.indexOf(c),L=e.filter(H=>H!==c);if(t(L),c!==l)return;const S=L[Math.min(x,L.length-1)];S?(s(S),m(S),o(S)):(s(""),m(""),o(""))},F=c=>{const x=new Set(h);x.has(c)?x.delete(c):x.add(c),r(x)},O=async()=>{!f||!await U(f.code)||(k(!0),window.clearTimeout(b.current),b.current=window.setTimeout(()=>k(!1),1600))};let T=G,P="Copy";w&&(T=Y,P="Copied");const D=f?.code.split(`
+`).length||0;return i.jsx("div",{className:v("app editor",u&&"explorerOpen"),children:i.jsxs("div",{className:"appRow",children:[i.jsxs("nav",{className:"edExplorer","aria-label":"Explorer",children:[i.jsx("p",{className:"sideHeading",children:"Explorer · my-portfolio"}),i.jsx(E,{node:I,depth:0,active:l,collapsed:h,onToggle:F,onOpen:C}),i.jsx("p",{className:"edExplorerNote",children:"Real source from this site, bundled at build time. Read-only."})]}),u&&i.jsx("button",{type:"button",className:"edScrim","aria-label":"Close explorer",onClick:()=>g(!1)}),i.jsxs("div",{className:"edMain",children:[i.jsxs("div",{className:"edTabs",children:[i.jsx("button",{type:"button",className:"iconBtn edExplorerToggle","aria-label":"Toggle explorer","aria-expanded":u,onClick:()=>g(c=>!c),children:i.jsx(B,{})}),i.jsx("div",{className:"edTabList",role:"group","aria-label":"Open files",children:e.map(c=>i.jsxs("div",{className:v("edTab",c===l&&"isActive"),children:[i.jsxs("button",{type:"button","aria-current":c===l&&"true"||void 0,className:"edTabLabel",onClick:()=>{const x=j(c);x&&C(x)},title:c,children:[i.jsx(z,{path:c}),$(c)]}),i.jsx("button",{type:"button",className:"edTabClose","aria-label":`Close ${$(c)}`,onClick:()=>W(c),children:i.jsx(_,{width:12,height:12})})]},c))}),f&&i.jsxs("button",{type:"button",className:"btn btnGhost edCopy",onClick:O,"aria-live":"polite",children:[i.jsx(T,{width:14,height:14}),P]})]}),f&&i.jsxs(i.Fragment,{children:[i.jsxs("div",{className:"edCrumbs",children:[i.jsx("span",{className:"edPath",children:f.path.split("/").join(" › ")}),i.jsx("span",{className:"edNote",children:f.note})]}),i.jsx(me,{file:f},f.path),i.jsxs("footer",{className:"edStatus",children:[i.jsx("span",{children:ue[f.language]}),i.jsxs("span",{children:[D," lines"]}),i.jsx("span",{className:"edStatusSpacer"}),i.jsx("span",{children:"Read-only"}),i.jsx("span",{children:"UTF-8"}),i.jsx("span",{children:"LF"})]})]}),!f&&i.jsxs("div",{className:"emptyState edEmpty",children:[i.jsx("p",{children:"No file open."}),i.jsxs("button",{type:"button",className:"btn",onClick:()=>C(M[0]),children:["Open ",$(R)]})]})]})]})})}export{we as default};
