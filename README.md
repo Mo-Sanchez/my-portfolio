@@ -5,6 +5,17 @@ desktop operating system in the browser, with windows, a dock, a launcher, a ter
 explorer, all filled with real portfolio content. Deployed to GitHub Pages at
 https://mo-sanchez.github.io/my-portfolio/
 
+MoOS is designed so a first-time visitor doesn't need to know how it works:
+
+- It opens on a **Home** window ("Start here") with the essentials and four big buttons: Projects,
+  Experience, Résumé, and Contact.
+- The dock shows only the portfolio sections, with labels. Terminal, Code, Browser, and Settings sit
+  behind **More**.
+- Desktop icons and project files open with a single click.
+- **One window at a time** (on by default, under Settings › Dock & Windows): opening something hides
+  the other windows, and closing it brings back the one before, much like a Back button.
+- A **Simple view** link in the menu bar switches to a regular scrolling page.
+
 The original single-page portfolio is still available at
 [`?view=classic`](https://mo-sanchez.github.io/my-portfolio/?view=classic).
 
@@ -28,7 +39,7 @@ Search for `PLACEHOLDER` to find details that still need filling in. MoOS hides 
 with `[Placeholder`, but the classic view still shows it.
 
 - **Projects:** each project has a `slug` (used in links like `#/project/phantom-sky`) and a
-  `category` (`operations-tools`, `automation-ai`, or `apps-games`), which decides its Files folder.
+  `category` (`operations-tools`, `automation-ai`, or `apps-games`), which decides its folder in the Projects app.
 - **Project screenshots:** put an image in `src/images/`, import it in `content.ts`, and set the
   project's `image` field. Projects without one show a designed cover with their name and stack.
 - **Résumé:** replace `public/Moises_Sanchez_Resume.pdf` (keep the filename).
@@ -52,7 +63,8 @@ Back/Forward buttons move between windows:
 
 | Link                         | Opens                                   |
 | ---------------------------- | --------------------------------------- |
-| `#/finder/projects`          | Files, showing every project            |
+| (no hash)                    | Home (on phones, the home screen)       |
+| `#/finder/projects`          | Projects, showing every project         |
 | `#/project/<slug>`           | A project's detail window               |
 | `#/experience/<case-study>`  | Experience, with a case study selected  |
 | `#/about/skills`             | About Me, scrolled to Skills            |
@@ -60,7 +72,8 @@ Back/Forward buttons move between windows:
 | `#/contact`                  | Contact                                 |
 | `#/settings/wallpaper`       | Settings › Wallpaper                    |
 
-Old single-page anchors (`#projects`, `#experience`, `#skills`, `#contact`, ...) still work.
+Old single-page anchors (`#projects`, `#experience`, `#skills`, `#contact`, ...) still work. An
+unknown link lands on Home.
 
 ## Keyboard shortcuts
 
@@ -90,7 +103,7 @@ src/os/
   mobile/                 phone home screen with full-screen apps
   apps/                   one folder per app (code-split; each loads its own CSS)
     meta.ts, registry.tsx app metadata and lazy components
-  fs.ts                   virtual filesystem shared by Files, Terminal, and Reader
+  fs.ts                   virtual filesystem shared by Projects, Terminal, and Reader
   search.ts               launcher search index
   styles/                 design tokens (base.css), shell, shared app layout, mobile
 ```

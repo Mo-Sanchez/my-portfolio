@@ -32,7 +32,7 @@ const files: Omit<SourceFile, "language">[] = [
   },
   {
     path: "src/os/fs.ts",
-    note: "Virtual filesystem shared by Files, Terminal, and Reader, generated from portfolio content.",
+    note: "Virtual filesystem shared by Projects, Terminal, and Reader, generated from portfolio content.",
     code: fs,
   },
   {

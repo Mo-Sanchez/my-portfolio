@@ -8,6 +8,7 @@ function run(...actions: WMAction[]): WMState {
 }
 
 const open = (id: string): WMAction => ({ type: "open", id, appId: id, route: "", title: id, rect });
+const openSolo = (id: string): WMAction => ({ type: "open", id, appId: id, route: "", title: id, rect, solo: true });
 
 describe("window manager", () => {
   it("opens windows on top and focuses them", () => {
@@ -130,5 +131,55 @@ describe("window manager", () => {
   it("clampRect keeps a grabbable strip on screen", () => {
     expect(clampRect({ x: -2000, y: -50, w: 600, h: 400 }, 1200, 800)).toEqual({ x: 96 - 600, y: 0, w: 600, h: 400 });
     expect(clampRect({ x: 0, y: 0, w: 3000, h: 3000 }, 1200, 800)).toEqual({ x: 0, y: 0, w: 1200, h: 800 });
+  });
+
+  describe("single-window mode", () => {
+    it("opening a window hides the others", () => {
+      const s = run(openSolo("a"), openSolo("b"));
+      expect(s.windows.a.minimized).toBe(true);
+      expect(s.windows.a.parked).toBe(true);
+      expect(s.windows.b.minimized).toBe(false);
+      expect(s.focused).toBe("b");
+    });
+
+    it("focusing a hidden window swaps it with the visible one", () => {
+      const s = run(openSolo("a"), openSolo("b"), { type: "focus", id: "a", solo: true });
+      expect(s.windows.a.minimized).toBe(false);
+      expect(s.windows.b.minimized).toBe(true);
+      expect(s.focused).toBe("a");
+    });
+
+    it("solo focus on an already-focused window still hides stray windows", () => {
+      const s = run(open("a"), open("b"), { type: "focus", id: "b", solo: true });
+      expect(s.windows.a.minimized).toBe(true);
+      expect(s.windows.b.minimized).toBe(false);
+    });
+
+    it("closing a window brings back the one it replaced", () => {
+      const s = run(openSolo("a"), openSolo("b"), openSolo("c"), { type: "close", id: "c" });
+      expect(s.focused).toBe("b");
+      expect(s.windows.b.minimized).toBe(false);
+      expect(s.windows.a.minimized).toBe(true);
+      const t = run(openSolo("a"), openSolo("b"), openSolo("c"), { type: "close", id: "c" }, { type: "close", id: "b" });
+      expect(t.focused).toBe("a");
+    });
+
+    it("windows the visitor minimized stay minimized", () => {
+      const s = run(openSolo("a"), { type: "minimize", id: "a" }, openSolo("b"), { type: "close", id: "b" });
+      expect(s.windows.a.minimized).toBe(true);
+      expect(s.focused).toBeNull();
+    });
+
+    it("a window opened on page load stays quiet until focused", () => {
+      const s = run({ ...open("a"), quiet: true } as WMAction);
+      expect(s.windows.a.quiet).toBe(true);
+      expect(run({ ...open("a"), quiet: true } as WMAction, open("b"), { type: "focus", id: "a" }).windows.a.quiet).toBe(false);
+    });
+
+    it("leaves other windows alone without the solo flag", () => {
+      const s = run(open("a"), open("b"), { type: "close", id: "b" });
+      expect(s.windows.a.minimized).toBe(false);
+      expect(s.focused).toBe("a");
+    });
   });
 });

@@ -151,6 +151,12 @@
   gap: 18px 8px;
   margin-top: 22px;
 }
+.mMoreLabel {
+  margin-top: 28px;
+}
+.mMoreLabel + .mGrid {
+  margin-top: 10px;
+}
 .mApp {
   display: flex;
   flex-direction: column;

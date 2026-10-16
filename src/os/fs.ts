@@ -1,4 +1,4 @@
-// The MoOS virtual filesystem. Files, the Terminal, and the Reader all read
+// The MoOS virtual filesystem. Projects, the Terminal, and the Reader all read
 // from this one tree, and every file is generated from src/data/content.ts so
 // there is a single source of truth for portfolio facts.
 
@@ -92,8 +92,6 @@ export function aboutText() {
     ...about.paragraphs.flatMap((p) => [p, ""]),
     "Focus",
     ...about.focus.map((f) => `  • ${f.title}: ${f.text}`),
-    "",
-    `Status: ${profile.status}`,
   ].join("\n");
 }
 
@@ -139,12 +137,13 @@ function readmeText() {
     "in React and TypeScript. Everything here is real portfolio content.",
     "",
     "Quick start",
-    "  • Projects live in ~/projects. Open any project file for details.",
-    "  • The résumé is in ~/documents/resume.pdf.",
+    "  • Start with the Home window. It's always the first icon in the dock.",
+    "  • Everything opens with a single click: dock icons, desktop icons, project files.",
+    "  • Close a window with × to go back to the one before.",
     "  • Press Ctrl+K (⌘K on Mac) to search apps, projects, and skills.",
-    "  • In Terminal, type `help` to see every command.",
+    "  • Terminal, Code, and Browser are under More in the dock. In Terminal, type `help`.",
     "",
-    "Prefer a simple page? Add ?view=classic to the address.",
+    "Prefer a regular page? Click Simple view in the menu bar.",
   ].join("\n");
 }
 

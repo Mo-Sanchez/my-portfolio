@@ -148,6 +148,15 @@ html.isInteracting iframe {
 .mbSearch {
   color: var(--ink-2);
 }
+.mbSimple {
+  margin-right: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 560;
+  text-decoration: none;
+}
+
 .mbHint {
   display: inline-flex;
   gap: 3px;
@@ -262,61 +271,7 @@ html.isInteracting iframe {
   text-shadow: none;
 }
 
-/* ---------- Welcome widget ---------- */
-.welcome {
-  position: absolute;
-  top: 22px;
-  left: 24px;
-  z-index: 2;
-  width: min(360px, calc(100vw - 140px));
-  padding: 18px 20px 16px;
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-float);
-  animation: popIn var(--dur-3) var(--ease-out) both;
-}
-
-.welcomeClose {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 26px;
-  height: 26px;
-}
-
-.welcomeId {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  margin: 10px 0 12px;
-}
-
-.welcomeAvatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow:
-    0 0 0 2px rgb(var(--chrome-rgb) / 0.9),
-    0 0 0 3.5px var(--accent-line);
-}
-
-.welcomeName {
-  font-size: 21px;
-  font-weight: 680;
-  letter-spacing: -0.02em;
-}
-
-.welcomeRole {
-  color: var(--ink-2);
-  font-size: 13px;
-}
-
-.welcomeLead {
-  color: var(--ink);
-  font-size: 13.5px;
-  line-height: 1.55;
-}
-
+/* ---------- Status pill (Home window, phone widget) ---------- */
 .statusPill {
   display: inline-flex;
   align-items: center;
@@ -338,45 +293,6 @@ html.isInteracting iframe {
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
-}
-
-.welcomeActions {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin-top: 14px;
-}
-
-.welcomeAction {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  padding: 9px 4px 7px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: var(--raised);
-  font-size: 12px;
-  font-weight: 560;
-  transition:
-    background var(--dur-1) var(--ease),
-    transform var(--dur-1) var(--ease);
-}
-.welcomeAction:hover {
-  background: var(--raised-3);
-  transform: translateY(-1px);
-}
-
-.welcomeHint {
-  margin-top: 12px;
-  color: var(--ink-3);
-  font-size: 11.5px;
-}
-
-@media (max-width: 1100px) {
-  .welcome {
-    width: 320px;
-  }
 }
 
 /* ---------- Windows ---------- */
@@ -760,6 +676,47 @@ html.isInteracting iframe {
   margin: 4px 3px;
   background: var(--line-strong);
 }
+.dock.hasLabels .dockDivider {
+  margin-bottom: 20px;
+}
+
+/* Always-visible names under the icons, so nobody has to hover to learn
+   what each one is. The hover tooltip is redundant with them. */
+.dockLabel {
+  display: none;
+}
+.dock.hasLabels .dockLabel {
+  display: block;
+  max-width: calc(var(--dock-icon) + 18px);
+  margin-top: 4px;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 560;
+  line-height: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dock.hasLabels .dockDot {
+  margin-bottom: -2px;
+}
+.dock.hasLabels .dockTip {
+  display: none;
+}
+
+.dockMoreTile {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  background: var(--raised-2);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+}
+.dockMore:hover .dockMoreTile {
+  background: var(--raised-3);
+}
 
 /* ---------- Menus ---------- */
 .menu {
@@ -809,6 +766,14 @@ html.isInteracting iframe {
   flex: 1;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.menuDetail {
+  display: block;
+  overflow: hidden;
+  font-size: 11.5px;
+  opacity: 0.7;
   text-overflow: ellipsis;
 }
 

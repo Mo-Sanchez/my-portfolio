@@ -178,7 +178,7 @@ export default function Contact() {
           </section>
 
           <p className="contactMeta faint">
-            Based in {profile.location} · {profile.status}
+            Based in {profile.location}
           </p>
         </div>
       </div>

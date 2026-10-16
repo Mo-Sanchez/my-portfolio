@@ -181,7 +181,7 @@ const commands: Command[] = [
     usage: "whoami",
     description: "Who built this",
     run: () => ({
-      lines: [accent(profile.name), text(profile.role), muted(`${profile.location} · ${profile.status}`)],
+      lines: [accent(profile.name), text(profile.role), muted(profile.location)],
     }),
   },
   {
@@ -328,7 +328,7 @@ const commands: Command[] = [
       const parts = resolvePath(state.cwd, target);
       const node = getNode(parts);
       if (node && node.kind === "folder") {
-        return { lines: [muted(`Opening ${displayPath(parts)} in Files…`)], effects: [{ type: "open", appId: "finder", route: parts.join("/") }] };
+        return { lines: [muted(`Opening ${displayPath(parts)}…`)], effects: [{ type: "open", appId: "finder", route: parts.join("/") }] };
       }
       if (node && node.kind === "file") {
         if ("url" in node.open) return { lines: [muted(`Opening ${node.open.url}…`)], effects: [{ type: "url", url: node.open.url }] };
@@ -437,7 +437,7 @@ const commands: Command[] = [
     hidden: true,
     run: () => ({
       lines: [
-        accent(`Excellent choice. ${profile.name} is ${profile.status.charAt(0).toLowerCase()}${profile.status.slice(1)}.`),
+        accent(`Excellent choice. Here's how to reach ${profile.name}.`),
         { kind: "link", text: "Email     ", label: profile.email, href: `mailto:${profile.email}` },
         { kind: "link", text: "LinkedIn  ", label: profile.linkedin, href: profile.linkedin },
         muted("Run 'resume' to see the résumé."),

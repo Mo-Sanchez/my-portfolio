@@ -3,6 +3,7 @@
 // virtual filesystem, search, terminal) reference apps without cycles.
 
 export type AppId =
+  | "home"
   | "finder"
   | "about"
   | "experience"
@@ -22,8 +23,11 @@ export type AppMeta = {
   keywords: string;
   size: { w: number; h: number };
   minSize: { w: number; h: number };
-  // Shown in the dock even when not running, in this order.
-  dock: boolean;
+  // Where the app lives in the dock: "core" apps are always shown, in this
+  // order; "more" apps sit behind the dock's More button.
+  dockGroup?: "core" | "more";
+  // Route used when the app is opened without one.
+  defaultRoute?: string;
   // One window per route (e.g. one window per project) instead of one per app.
   perRoute?: boolean;
   // Internal viewers that only open from files, not from the launcher.
@@ -32,13 +36,23 @@ export type AppMeta = {
 
 export const appList: AppMeta[] = [
   {
+    id: "home",
+    title: "Home",
+    description: "Start here: who I am and where to look",
+    keywords: "home start welcome overview intro introduction",
+    size: { w: 940, h: 680 },
+    minSize: { w: 360, h: 360 },
+    dockGroup: "core",
+  },
+  {
     id: "finder",
-    title: "Files",
-    description: "Browse projects and documents",
-    keywords: "finder explorer folders projects documents files",
+    title: "Projects",
+    description: "Browse every project, plus documents",
+    keywords: "finder explorer folders projects documents files work portfolio",
+    defaultRoute: "projects",
     size: { w: 920, h: 600 },
     minSize: { w: 480, h: 340 },
-    dock: true,
+    dockGroup: "core",
   },
   {
     id: "about",
@@ -47,7 +61,7 @@ export const appList: AppMeta[] = [
     keywords: "about bio profile skills education certifications who",
     size: { w: 860, h: 660 },
     minSize: { w: 360, h: 360 },
-    dock: true,
+    dockGroup: "core",
   },
   {
     id: "experience",
@@ -56,7 +70,7 @@ export const appList: AppMeta[] = [
     keywords: "experience work career amazon air timeline impact jobs",
     size: { w: 900, h: 680 },
     minSize: { w: 380, h: 380 },
-    dock: true,
+    dockGroup: "core",
   },
   {
     id: "resume",
@@ -65,7 +79,7 @@ export const appList: AppMeta[] = [
     keywords: "resume cv pdf download print",
     size: { w: 820, h: 780 },
     minSize: { w: 380, h: 380 },
-    dock: true,
+    dockGroup: "core",
   },
   {
     id: "contact",
@@ -74,7 +88,7 @@ export const appList: AppMeta[] = [
     keywords: "contact email mail linkedin github hire reach message",
     size: { w: 640, h: 620 },
     minSize: { w: 340, h: 400 },
-    dock: true,
+    dockGroup: "core",
   },
   {
     id: "terminal",
@@ -83,7 +97,7 @@ export const appList: AppMeta[] = [
     keywords: "terminal shell console command line cli bash",
     size: { w: 740, h: 480 },
     minSize: { w: 380, h: 240 },
-    dock: true,
+    dockGroup: "more",
   },
   {
     id: "editor",
@@ -92,7 +106,7 @@ export const appList: AppMeta[] = [
     keywords: "code editor source ide typescript react programming",
     size: { w: 1000, h: 660 },
     minSize: { w: 520, h: 340 },
-    dock: true,
+    dockGroup: "more",
   },
   {
     id: "browser",
@@ -101,7 +115,7 @@ export const appList: AppMeta[] = [
     keywords: "browser web internet links pages navigate",
     size: { w: 1000, h: 680 },
     minSize: { w: 480, h: 360 },
-    dock: true,
+    dockGroup: "more",
   },
   {
     id: "settings",
@@ -110,7 +124,7 @@ export const appList: AppMeta[] = [
     keywords: "settings preferences theme dark light wallpaper accent dock motion",
     size: { w: 780, h: 580 },
     minSize: { w: 480, h: 400 },
-    dock: true,
+    dockGroup: "more",
   },
   {
     id: "project",
@@ -119,7 +133,6 @@ export const appList: AppMeta[] = [
     keywords: "project",
     size: { w: 820, h: 680 },
     minSize: { w: 360, h: 360 },
-    dock: false,
     perRoute: true,
     internal: true,
   },
@@ -130,7 +143,6 @@ export const appList: AppMeta[] = [
     keywords: "reader text document",
     size: { w: 640, h: 560 },
     minSize: { w: 340, h: 280 },
-    dock: false,
     perRoute: true,
     internal: true,
   },

@@ -14,7 +14,10 @@ export type Settings = {
   motion: MotionPref;
   dockSize: DockSize;
   dockMagnify: boolean;
-  showWelcome: boolean;
+  // Show app names under dock icons.
+  dockLabels: boolean;
+  // Opening a window hides the others, so only one is on screen at a time.
+  singleWindow: boolean;
 };
 
 export const DEFAULT_WALLPAPER = "misty-forest";
@@ -27,7 +30,8 @@ export const defaultSettings: Settings = {
   motion: "system",
   dockSize: "medium",
   dockMagnify: true,
-  showWelcome: true,
+  dockLabels: true,
+  singleWindow: true,
 };
 
 export const accents: { id: AccentId; label: string; dark: string; light: string }[] = [

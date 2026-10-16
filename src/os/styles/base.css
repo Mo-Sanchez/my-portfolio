@@ -38,7 +38,8 @@
 
   --menubar-h: 32px;
   --dock-icon: 50px;
-  --dock-reserve: 88px;
+  /* Set from JS (dockReserve in state/os.ts) to match the dock size and labels. */
+  --dock-reserve: 104px;
 
   /* Transparency levels (overridden by [data-transparency]) */
   --surface-a: 0.9;
@@ -113,11 +114,9 @@
 
 :root[data-dock="small"] {
   --dock-icon: 42px;
-  --dock-reserve: 78px;
 }
 :root[data-dock="large"] {
   --dock-icon: 60px;
-  --dock-reserve: 100px;
 }
 
 :root[data-motion="reduced"] {

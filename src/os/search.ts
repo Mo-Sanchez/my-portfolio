@@ -71,7 +71,7 @@ export function buildIndex(): SearchItem[] {
   }
 
   const sections: [string, string, OSAction, string][] = [
-    ["All Projects", "Browse every project in Files", { type: "open", appId: "finder", route: "projects" }, "work portfolio built"],
+    ["All Projects", "Browse every project by category", { type: "open", appId: "finder", route: "projects" }, "work portfolio built"],
     ["Skills", "Languages, frameworks, and tools", { type: "open", appId: "about", route: "skills" }, "tech stack toolkit"],
     ["Education", about.education.map((e) => e.credential).join(" · "), { type: "open", appId: "about", route: "education" }, "school university degree college uf"],
     ["Certifications", about.certifications.map((c) => c.name).join(" · "), { type: "open", appId: "about", route: "education" }, "aws cloud certified"],

@@ -22,7 +22,7 @@ type OpenMenu = { id: string; x: number; y: number; items: MenuItem[]; anchor: H
 
 export default function MenuBar({ onToggleCenter, centerOpen }: { onToggleCenter: () => void; centerOpen: boolean }) {
   const os = useOS();
-  const { wm, settings, theme, notices } = os;
+  const { wm, theme, notices } = os;
   const now = useNow();
   const [menu, setMenu] = useState<OpenMenu>(null);
   const closeMenu = useCallback(() => setMenu(null), []);
@@ -32,6 +32,7 @@ export default function MenuBar({ onToggleCenter, centerOpen }: { onToggleCenter
   let appName = "Desktop";
   if (appId) appName = appMeta[appId].title;
   if (appId === "project") appName = "Projects";
+  if (appId === "reader") appName = "Documents";
 
   const openWindows = wm.order.filter((id) => !wm.windows[id].closing);
 
@@ -55,12 +56,16 @@ export default function MenuBar({ onToggleCenter, centerOpen }: { onToggleCenter
       id: "go",
       label: "Go",
       items: () => [
+        { label: "Home", onSelect: () => os.openApp("home") },
+        "separator",
         { label: "Projects", onSelect: () => os.openApp("finder", "projects") },
         { label: "Documents", onSelect: () => os.openApp("finder", "documents") },
         { label: "Desktop", onSelect: () => os.openApp("finder", "desktop") },
         { label: "Applications", onSelect: () => os.openApp("finder", "applications") },
         "separator",
+        { label: "About Me", onSelect: () => os.openApp("about") },
         { label: "Experience", onSelect: () => os.openApp("experience") },
+        { label: "Résumé", onSelect: () => os.openApp("resume") },
         { label: "Contact", onSelect: () => os.openApp("contact") },
       ],
     },
@@ -87,7 +92,7 @@ export default function MenuBar({ onToggleCenter, centerOpen }: { onToggleCenter
           }
           items.push("separator", { label: "Show Desktop", onSelect: () => openWindows.forEach((id) => os.minimizeWindow(id)) });
         } else {
-          items.push({ label: "Open Files", onSelect: () => os.openApp("finder") });
+          items.push({ label: "Open Home", onSelect: () => os.openApp("home") });
         }
         return items;
       },
@@ -96,25 +101,26 @@ export default function MenuBar({ onToggleCenter, centerOpen }: { onToggleCenter
       id: "help",
       label: "Help",
       items: () => [
+        { label: "How to Use MoOS", onSelect: () => os.openApp("home") },
         { label: "Keyboard Shortcuts", onSelect: () => os.openApp("reader", "documents/keyboard-shortcuts.txt") },
         { label: "Read Me", onSelect: () => os.openApp("reader", "README.md") },
         { label: "Terminal Commands", onSelect: () => os.openApp("terminal") },
         "separator",
-        { label: "Classic Portfolio View", onSelect: () => window.location.assign(classicHref) },
+        { label: "Switch to Simple View", onSelect: () => window.location.assign(classicHref) },
       ],
     },
   ];
 
   const brandItems = (): MenuItem[] => {
     const items: MenuItem[] = [
+      { label: "Home", onSelect: () => os.openApp("home") },
       { label: `About ${profile.name}`, onSelect: () => os.openApp("about") },
       { label: "About MoOS", onSelect: () => os.openApp("reader", "README.md") },
       "separator",
       { label: "Settings…", shortcut: `${modKey} ,`, onSelect: () => os.openApp("settings") },
       { label: "Change Wallpaper…", onSelect: () => os.openApp("settings", "wallpaper") },
     ];
-    if (!settings.showWelcome) items.push({ label: "Show Welcome", onSelect: () => os.updateSettings({ showWelcome: true }) });
-    items.push("separator", { label: "Classic Portfolio View", onSelect: () => window.location.assign(classicHref) });
+    items.push("separator", { label: "Switch to Simple View", onSelect: () => window.location.assign(classicHref) });
     return items;
   };
 
@@ -177,6 +183,9 @@ export default function MenuBar({ onToggleCenter, centerOpen }: { onToggleCenter
       </div>
 
       <div className="menubarRight">
+        <a className="mbItem mbSimple" href={classicHref} title="A regular scrolling version of this portfolio">
+          Simple view
+        </a>
         <button type="button" className="mbItem mbSearch" onClick={() => os.setLauncherOpen(true)} aria-label="Search">
           <SearchIcon width={14} height={14} />
           <span className="mbHint">

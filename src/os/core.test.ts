@@ -3,7 +3,7 @@ import { allProjects } from "../data/content";
 import { appMeta, windowIdFor } from "./apps/meta";
 import { absolutePath, allFiles, displayPath, getNode, labelPath, projectText, resolvePath, root } from "./fs";
 import { buildIndex, search, slugify } from "./search";
-import { formatHash, parseHash, sameTarget } from "./state/router";
+import { formatHash, HOME, parseHash, sameTarget, targetOfHash } from "./state/router";
 import { defaultSettings, resolveMotion, resolveTheme, sanitizeSettings } from "./state/settings";
 
 describe("router", () => {
@@ -17,7 +17,8 @@ describe("router", () => {
     expect(parseHash("#projects")).toEqual({ appId: "finder", route: "projects" });
     expect(parseHash("#skills")).toEqual({ appId: "about", route: "skills" });
     expect(parseHash("#contact")).toEqual({ appId: "contact", route: "" });
-    expect(parseHash("#home")).toBeNull();
+    expect(parseHash("#home")).toEqual(HOME);
+    expect(parseHash("#nowhere")).toBeNull();
   });
 
   it("treats empty and junk hashes as the desktop", () => {
@@ -33,6 +34,16 @@ describe("router", () => {
     expect(formatHash(null)).toBe("#/");
     expect(sameTarget(t, { ...t })).toBe(true);
     expect(sameTarget(t, null)).toBe(false);
+  });
+
+  it("puts Home at the bare URL", () => {
+    expect(targetOfHash("")).toEqual(HOME);
+    expect(targetOfHash("#")).toEqual(HOME);
+    expect(targetOfHash("#/home")).toEqual(HOME);
+    expect(targetOfHash("#/")).toBeNull();
+    expect(targetOfHash("#/resume")).toEqual({ appId: "resume", route: "" });
+    expect(formatHash(HOME)).toBe("");
+    expect(formatHash({ appId: "home", route: "" })).toBe("");
   });
 });
 
@@ -123,6 +134,15 @@ describe("settings", () => {
     expect("extra" in s).toBe(false);
   });
 
+  it("defaults to the simpler layout and drops retired keys", () => {
+    expect(defaultSettings.singleWindow).toBe(true);
+    expect(defaultSettings.dockLabels).toBe(true);
+    const s = sanitizeSettings({ showWelcome: false, singleWindow: false, dockLabels: "no" });
+    expect(s.singleWindow).toBe(false);
+    expect(s.dockLabels).toBe(true);
+    expect("showWelcome" in s).toBe(false);
+  });
+
   it("resolves system preferences", () => {
     expect(resolveTheme("system", true)).toBe("dark");
     expect(resolveTheme("system", false)).toBe("light");
@@ -137,5 +157,14 @@ describe("app registry", () => {
     expect(windowIdFor("about", "skills")).toBe("about");
     expect(windowIdFor("project", "phantom-sky")).toBe("project:phantom-sky");
     expect(appMeta.project.perRoute).toBe(true);
+  });
+
+  it("keeps the dock to the portfolio sections, with extras under More", () => {
+    const core = Object.values(appMeta).filter((a) => a.dockGroup === "core").map((a) => a.id);
+    expect(core).toEqual(["home", "finder", "about", "experience", "resume", "contact"]);
+    const more = Object.values(appMeta).filter((a) => a.dockGroup === "more").map((a) => a.id);
+    expect(more).toEqual(["terminal", "editor", "browser", "settings"]);
+    expect(appMeta.finder.title).toBe("Projects");
+    expect(appMeta.finder.defaultRoute).toBe("projects");
   });
 });

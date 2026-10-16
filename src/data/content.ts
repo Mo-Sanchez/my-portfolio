@@ -9,11 +9,10 @@ export const profile = {
   github: "https://github.com/Mo-Sanchez",
   linkedin: "https://www.linkedin.com/in/moises-sanchez-/",
   resume: `${import.meta.env.BASE_URL}Moises_Sanchez_Resume.pdf`,
-  headline: "I build software that makes large-scale operations faster, cheaper, and easier to run.",
+  headline: "I like coding.",
   intro:
     "Computer Science graduate from the University of Florida with five years inside Amazon Air's operations. " +
     "I find the manual, error-prone parts of a workflow, measure them, and replace them with tools people actually use.",
-  status: "Open to software engineering, TPM, and technical program roles",
 };
 
 export type Metric = { value: string; label: string; detail: string };

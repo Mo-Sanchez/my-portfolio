@@ -1,11 +1,20 @@
 import { createContext, useContext } from "react";
 import type { AppId } from "../apps/meta";
 import type { OpenTarget } from "../fs";
-import type { Settings, ThemePref } from "./settings";
+import type { DockSize, Settings, ThemePref } from "./settings";
 import type { Rect, Snap, WMState } from "./windows";
 
 export const MENUBAR_H = 32;
-export const DOCK_RESERVE = 88;
+
+// Space kept clear above the bottom of the screen for the dock.
+const DOCK_BASE: Record<DockSize, number> = { small: 78, medium: 88, large: 100 };
+const DOCK_LABEL_H = 16;
+
+export function dockReserve(size: DockSize, labels: boolean) {
+  let reserve = DOCK_BASE[size];
+  if (labels) reserve += DOCK_LABEL_H;
+  return reserve;
+}
 
 export type OSAction =
   | { type: "open"; appId: AppId; route?: string }
@@ -25,7 +34,7 @@ export type Notice = {
 };
 
 export type MenuItem =
-  | { label: string; onSelect: () => void; shortcut?: string; danger?: boolean; checked?: boolean }
+  | { label: string; onSelect: () => void; shortcut?: string; detail?: string; danger?: boolean; checked?: boolean }
   | "separator";
 
 export type ContextMenuState = { x: number; y: number; items: MenuItem[]; label: string } | null;
@@ -41,8 +50,10 @@ export type OSValue = {
   toasts: Notice[];
   launcherOpen: boolean;
   contextMenu: ContextMenuState;
+  // Height reserved for the dock, in pixels.
+  dockReserve: number;
   desktopSize: () => { width: number; height: number };
-  openApp: (appId: AppId, route?: string) => void;
+  openApp: (appId: AppId, route?: string, opts?: { quiet?: boolean }) => void;
   openTarget: (target: OpenTarget) => void;
   run: (action: OSAction) => void;
   focusWindow: (id: string) => void;

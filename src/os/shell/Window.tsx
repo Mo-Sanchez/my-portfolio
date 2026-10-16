@@ -86,10 +86,12 @@ function WindowFrame({ win, focused, z }: { win: WindowState; focused: boolean; 
   // Move keyboard focus into the window when it becomes active.
   useEffect(() => {
     const el = ref.current;
-    if (focused && !win.minimized && el && !el.contains(document.activeElement)) {
+    // Windows opened by the page itself on load stay quiet, so a keyboard
+    // visitor's first Tab still reaches the skip link.
+    if (focused && !win.minimized && !win.quiet && el && !el.contains(document.activeElement)) {
       el.focus({ preventScroll: true });
     }
-  }, [focused, win.minimized]);
+  }, [focused, win.minimized, win.quiet]);
 
   const track = (onMove: (ev: PointerEvent) => void, onEnd: () => void) => {
     const end = (ev?: PointerEvent) => {

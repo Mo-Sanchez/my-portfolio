@@ -97,7 +97,10 @@ export function Menu({ x, y, items, label, onClose, ignore }: MenuProps) {
             <span className="menuCheck" aria-hidden="true">
               {item.checked && <CheckIcon width={13} height={13} />}
             </span>
-            <span className="menuLabel">{item.label}</span>
+            <span className="menuLabel">
+              {item.label}
+              {item.detail && <span className="menuDetail">{item.detail}</span>}
+            </span>
             {item.shortcut && <span className="menuShortcut">{item.shortcut}</span>}
           </button>
         );

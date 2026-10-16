@@ -1,0 +1,189 @@
+.homePage {
+  padding-top: 34px;
+}
+
+.homeHero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.homeAvatar {
+  flex: none;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 3px rgb(var(--surface-rgb)),
+    0 0 0 5px var(--accent-line),
+    0 16px 36px -16px rgb(0 0 0 / 0.5);
+}
+.homeIdentity {
+  min-width: 0;
+}
+.homeIdentity .eyebrow {
+  margin-bottom: 4px;
+}
+.homeRole {
+  margin-top: 3px;
+  color: var(--ink-2);
+  font-size: 15px;
+  font-weight: 560;
+}
+.homeLead {
+  margin-top: 18px;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.homeActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+/* Destinations: big, obvious buttons with a plain description each. */
+.homeDestinations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.homeCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  height: 100%;
+  padding: 14px 14px 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--raised);
+  text-align: left;
+  transition:
+    background var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    transform var(--dur-1) var(--ease);
+}
+.homeCard:hover {
+  background: var(--raised-2);
+  border-color: var(--accent-line);
+  transform: translateY(-1px);
+}
+.homeCard svg {
+  flex: none;
+}
+.homeCardText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.homeCardTitle {
+  font-size: 15px;
+  font-weight: 650;
+}
+.homeCardDetail {
+  color: var(--ink-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.homeCardArrow {
+  color: var(--ink-3);
+  transition: transform var(--dur-1) var(--ease);
+}
+.homeCard:hover .homeCardArrow {
+  color: var(--accent);
+  transform: translateX(2px);
+}
+
+.homeFeatured {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.homeProject {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  padding: 8px 8px 12px;
+  border-radius: calc(var(--radius) + 4px);
+  border: 1px solid var(--line);
+  background: var(--raised);
+  text-align: left;
+  transition:
+    background var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease);
+}
+.homeProject:hover {
+  background: var(--raised-2);
+  border-color: var(--accent-line);
+}
+.homeProject .projectCover {
+  margin-bottom: 6px;
+}
+.homeProjectName {
+  padding: 0 4px;
+  font-size: 14px;
+  font-weight: 650;
+}
+.homeProjectTagline {
+  padding: 0 4px;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.homeAll {
+  margin-top: 12px;
+}
+
+.homeTips {
+  display: grid;
+  gap: 12px;
+}
+.homeTips li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--ink-2);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.homeTips li > svg {
+  flex: none;
+}
+.homeTips strong {
+  color: var(--ink);
+  font-weight: 620;
+}
+.homeTips a {
+  color: var(--accent);
+  font-weight: 560;
+}
+.homeTipGlyph {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  border: 1px solid var(--line-strong);
+  background: var(--raised-2);
+  color: var(--ink);
+}
+
+@container (max-width: 560px) {
+  .homeDestinations {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .homeHero {
+    gap: 14px;
+  }
+  .homeAvatar {
+    width: 64px;
+    height: 64px;
+  }
+}

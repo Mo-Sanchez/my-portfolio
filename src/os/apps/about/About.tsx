@@ -58,10 +58,6 @@ export default function About({ route, setRoute }: AppProps) {
               <p className="aboutLocation">
                 <PinIcon width={14} height={14} /> {profile.location}
               </p>
-              <p className="statusPill">
-                <span className="statusDot" aria-hidden="true" />
-                {profile.status}
-              </p>
             </div>
           </header>
 

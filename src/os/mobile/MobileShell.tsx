@@ -22,7 +22,9 @@ const grid: Tile[] = [
   { label: "About Me", icon: "about", appId: "about" },
   { label: "Résumé", icon: "resume", appId: "resume" },
   { label: "Contact", icon: "contact", appId: "contact" },
-  { label: "Files", icon: "finder", appId: "finder" },
+];
+
+const extras: Tile[] = [
   { label: "Terminal", icon: "terminal", appId: "terminal" },
   { label: "Code", icon: "editor", appId: "editor" },
   { label: "Browser", icon: "browser", appId: "browser" },
@@ -75,9 +77,11 @@ export default function MobileShell() {
   const time = now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
   const date = now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
 
-  const windows = wm.order.map((id) => wm.windows[id]);
+  // The phone home screen already does the Home window's job, so a Home
+  // window (from a #/home link or a desktop session) is never shown here.
+  const windows = wm.order.map((id) => wm.windows[id]).filter((w) => w.appId !== "home");
   const running = windows.filter((w) => !w.closing);
-  const onHome = !wm.focused;
+  const onHome = !wm.focused || wm.focused === "home";
 
   const launch = (t: Tile) => os.openApp(t.appId, t.route || "");
 
@@ -121,10 +125,6 @@ export default function MobileShell() {
             </div>
           </div>
           <p className="mHeadline">{profile.headline}</p>
-          <p className="statusPill">
-            <span className="statusDot" aria-hidden="true" />
-            {profile.status}
-          </p>
           <div className="mWidgetActions">
             <button type="button" className="btn btnPrimary" onClick={() => os.openApp("resume")}>
               Résumé
@@ -154,8 +154,22 @@ export default function MobileShell() {
           </section>
         )}
 
-        <ul className="mGrid" aria-label="Apps">
+        <ul className="mGrid" aria-label="Portfolio">
           {grid.map((t) => (
+            <li key={t.label}>
+              <button type="button" className="mApp" onClick={() => launch(t)}>
+                <AppIcon app={t.icon} size={60} className="mAppIcon" />
+                <span className="mAppLabel">{t.label}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mSectionLabel mMoreLabel" id="m-more">
+          More
+        </p>
+        <ul className="mGrid" aria-labelledby="m-more">
+          {extras.map((t) => (
             <li key={t.label}>
               <button type="button" className="mApp" onClick={() => launch(t)}>
                 <AppIcon app={t.icon} size={60} className="mAppIcon" />

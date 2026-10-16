@@ -17,6 +17,12 @@ export type WindowState = {
   maximized: boolean;
   snap: Snap;
   closing: boolean;
+  // Hidden automatically by single-window mode (not by the visitor), so it
+  // comes back when the window that replaced it closes.
+  parked: boolean;
+  // Opened by the page on load rather than by the visitor: it doesn't take
+  // keyboard focus until the visitor focuses it.
+  quiet?: boolean;
 };
 
 export type WMState = {
@@ -27,8 +33,18 @@ export type WMState = {
 };
 
 export type WMAction =
-  | { type: "open"; id: string; appId: string; route: string; title: string; rect: Rect; maximized?: boolean }
-  | { type: "focus"; id: string }
+  | {
+      type: "open";
+      id: string;
+      appId: string;
+      route: string;
+      title: string;
+      rect: Rect;
+      maximized?: boolean;
+      solo?: boolean;
+      quiet?: boolean;
+    }
+  | { type: "focus"; id: string; solo?: boolean }
   | { type: "blur" }
   | { type: "minimize"; id: string }
   | { type: "close"; id: string }
@@ -62,6 +78,31 @@ function raise(order: string[], id: string) {
   return [...order.filter((o) => o !== id), id];
 }
 
+// Minimize every visible window except `id` (single-window mode).
+function hideOthers(windows: Record<string, WindowState>, id: string) {
+  const out: Record<string, WindowState> = {};
+  for (const [key, w] of Object.entries(windows)) {
+    if (key !== id && !w.minimized && !w.closing) out[key] = { ...w, minimized: true, parked: true };
+    else out[key] = w;
+  }
+  return out;
+}
+
+// The window to bring back when `excludeId` closes: the most recent one that
+// single-window mode put away.
+function topParked(state: WMState, excludeId: string) {
+  for (let i = state.order.length - 1; i >= 0; i--) {
+    const id = state.order[i];
+    const w = state.windows[id];
+    if (id !== excludeId && w && w.parked && w.minimized && !w.closing) return id;
+  }
+  return null;
+}
+
+function othersVisible(state: WMState, id: string) {
+  return state.order.some((o) => o !== id && !state.windows[o].minimized && !state.windows[o].closing);
+}
+
 function update(state: WMState, id: string, patch: Partial<WindowState>): WMState {
   const w = state.windows[id];
   if (!w) return state;
@@ -92,32 +133,47 @@ export function wmReducer(state: WMState, action: WMAction): WMState {
         maximized: Boolean(action.maximized),
         snap: "none",
         closing: false,
+        parked: false,
+        quiet: action.quiet,
       };
-      return { windows: { ...state.windows, [id]: win }, order: raise(state.order, id), focused: id };
+      let windows = { ...state.windows, [id]: win };
+      if (action.solo) windows = hideOthers(windows, id);
+      return { windows, order: raise(state.order, id), focused: id };
     }
     case "focus": {
       const w = state.windows[action.id];
       if (!w || w.closing) return state;
       const isTop = state.order[state.order.length - 1] === action.id;
-      if (state.focused === action.id && !w.minimized && isTop) return state;
-      const next = update(state, action.id, { minimized: false });
-      return { ...next, order: raise(state.order, action.id), focused: action.id };
+      const settled = state.focused === action.id && !w.minimized && isTop;
+      if (settled && !(action.solo && othersVisible(state, action.id))) return state;
+      const next = update(state, action.id, { minimized: false, parked: false, quiet: false });
+      let windows = next.windows;
+      if (action.solo) windows = hideOthers(windows, action.id);
+      return { windows, order: raise(state.order, action.id), focused: action.id };
     }
     case "blur":
       if (state.focused === null) return state;
       return { ...state, focused: null };
     case "minimize": {
       if (!state.windows[action.id]) return state;
-      const next = update(state, action.id, { minimized: true });
+      const next = update(state, action.id, { minimized: true, parked: false });
       let focused = state.focused;
       if (focused === action.id) focused = topVisible(state, action.id);
       return { ...next, focused };
     }
     case "close": {
       if (!state.windows[action.id]) return state;
-      const next = update(state, action.id, { closing: true });
+      let next = update(state, action.id, { closing: true });
       let focused = state.focused;
-      if (focused === action.id) focused = topVisible(state, action.id);
+      if (focused === action.id) {
+        focused = topVisible(state, action.id);
+        // Closing the only window on screen returns to the one it replaced.
+        const back = topParked(state, action.id);
+        if (!focused && back) {
+          next = update(next, back, { minimized: false, parked: false });
+          focused = back;
+        }
+      }
       return { ...next, focused };
     }
     case "remove": {
@@ -135,13 +191,13 @@ export function wmReducer(state: WMState, action: WMAction): WMState {
       if (!w) return state;
       let maximized = !w.maximized;
       if (w.snap !== "none") maximized = true;
-      const next = update(state, action.id, { maximized, snap: "none", minimized: false });
+      const next = update(state, action.id, { maximized, snap: "none", minimized: false, parked: false });
       return { ...next, order: raise(state.order, action.id), focused: action.id };
     }
     case "snap": {
       const w = state.windows[action.id];
       if (!w) return state;
-      const next = update(state, action.id, { snap: action.side, maximized: false, minimized: false });
+      const next = update(state, action.id, { snap: action.side, maximized: false, minimized: false, parked: false });
       return { ...next, order: raise(state.order, action.id), focused: action.id };
     }
     case "move": {

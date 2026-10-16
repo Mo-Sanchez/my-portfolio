@@ -94,7 +94,7 @@ export default function Reader({ route }: AppProps) {
           <CopyGlyph width={14} height={14} /> {copyLabel}
         </button>
         <button type="button" className="btn" onClick={() => openApp("finder", folder)}>
-          Open in Files
+          Show in Folder
         </button>
       </div>
       <div className="appScroll">

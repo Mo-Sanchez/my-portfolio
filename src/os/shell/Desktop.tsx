@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { loadJSON, saveJSON } from "../lib/util";
-import { modKey } from "../lib/platform";
 import { useOS } from "../state/os";
 import { focusedWindow } from "../state/windows";
 import ContextMenu from "./Menu";
@@ -9,7 +7,6 @@ import Dock from "./Dock";
 import Launcher from "./Launcher";
 import MenuBar from "./MenuBar";
 import { NotificationCenter, Toasts } from "./Notifications";
-import Welcome from "./Welcome";
 import WindowFrame from "./Window";
 
 function useShortcuts() {
@@ -62,31 +59,12 @@ function useShortcuts() {
   }, [os, wm, launcherOpen, setLauncherOpen]);
 }
 
-// A one-time hint for first-time visitors.
-function useFirstVisitTip() {
-  const { notify } = useOS();
-  useEffect(() => {
-    if (loadJSON("moos:visited", false)) return;
-    const timer = window.setTimeout(() => {
-      saveJSON("moos:visited", true);
-      notify({
-        title: "Tip: search anything",
-        body: `Press ${modKey} K to jump to projects, skills, or the résumé.`,
-        appId: "finder",
-        action: { label: "Search", run: { type: "search" } },
-      });
-    }, 1400);
-    return () => window.clearTimeout(timer);
-  }, [notify]);
-}
-
 export default function Desktop() {
   const os = useOS();
   const { wm } = os;
   const [centerOpen, setCenterOpen] = useState(false);
   const closeCenter = useCallback(() => setCenterOpen(false), []);
   useShortcuts();
-  useFirstVisitTip();
 
   return (
     <div className="desktopShell">
@@ -96,7 +74,6 @@ export default function Desktop() {
       <MenuBar centerOpen={centerOpen} onToggleCenter={() => setCenterOpen((o) => !o)} />
       <main className="desktop" aria-label="Desktop">
         <DesktopIcons />
-        <Welcome />
         {wm.order.map((id, i) => (
           <WindowFrame key={id} win={wm.windows[id]} focused={wm.focused === id} z={10 + i} />
         ))}

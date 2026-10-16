@@ -25,6 +25,17 @@ const gearPath = (() => {
 })();
 
 const specs: Record<AppId | "folder", IconSpec> = {
+  home: {
+    from: "#8fb39b",
+    to: "#2e5a46",
+    glyph: (ink) => (
+      <>
+        <path d="M15 30.5 32 16l17 14.5" />
+        <path d="M20 26.5V47a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V26.5" fill={ink} fillOpacity="0.14" />
+        <path d="M28 49V38.5h8V49" />
+      </>
+    ),
+  },
   finder: {
     from: "#4f826b",
     to: "#214537",

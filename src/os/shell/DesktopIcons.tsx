@@ -3,19 +3,19 @@ import type { AppId } from "../apps/meta";
 import { useViewport } from "../lib/hooks";
 import { classicHref, modKey } from "../lib/platform";
 import { clamp, cx, loadJSON, removeKey, saveJSON } from "../lib/util";
-import { DOCK_RESERVE, MENUBAR_H, useOS, type MenuItem } from "../state/os";
+import { MENUBAR_H, useOS, type MenuItem } from "../state/os";
 import AppIcon, { type IconKind } from "../ui/AppIcon";
 
 type DeskIcon = { id: string; label: string; icon: IconKind; appId: AppId; route?: string };
 
+// Just the portfolio sections, one click each. The extra apps (Terminal,
+// Code, Browser) live behind the dock's More button and in search.
 const desktopIcons: DeskIcon[] = [
   { id: "projects", label: "Projects", icon: "folder", appId: "finder", route: "projects" },
   { id: "about", label: "About Me", icon: "about", appId: "about" },
   { id: "experience", label: "Experience", icon: "experience", appId: "experience" },
-  { id: "resume", label: "Résumé.pdf", icon: "resume", appId: "resume" },
+  { id: "resume", label: "Résumé", icon: "resume", appId: "resume" },
   { id: "contact", label: "Contact", icon: "contact", appId: "contact" },
-  { id: "terminal", label: "Terminal", icon: "terminal", appId: "terminal" },
-  { id: "readme", label: "README.md", icon: "reader", appId: "reader", route: "README.md" },
 ];
 
 const KEY = "moos:icon-layout";
@@ -64,7 +64,7 @@ function normalize(saved: Layout, rows: number): Layout {
 export default function DesktopIcons() {
   const os = useOS();
   const { w, h } = useViewport();
-  const rows = Math.max(1, Math.floor((h - MENUBAR_H - DOCK_RESERVE - PAD_TOP) / CELL_H));
+  const rows = Math.max(1, Math.floor((h - MENUBAR_H - os.dockReserve - PAD_TOP) / CELL_H));
   const [saved, setSaved] = useState<Layout>(() => loadJSON<Layout>(KEY, {}));
   const layout = normalize(saved, rows);
   const [selected, setSelected] = useState<string | null>(null);
@@ -143,18 +143,17 @@ export default function DesktopIcons() {
     }
     const items: MenuItem[] = [
       { label: "Search…", shortcut: `${modKey} K`, onSelect: () => os.setLauncherOpen(true) },
-      { label: "Open Terminal", onSelect: () => os.openApp("terminal") },
+      { label: "Open Home", onSelect: () => os.openApp("home") },
       "separator",
       { label: "Change Wallpaper…", onSelect: () => os.openApp("settings", "wallpaper") },
       { label: themeLabel, onSelect: () => os.updateSettings({ theme }) },
     ];
-    if (!os.settings.showWelcome) items.push({ label: "Show Welcome", onSelect: () => os.updateSettings({ showWelcome: true }) });
     items.push(
       "separator",
       { label: "Sort Icons by Name", onSelect: sortByName },
       { label: "Reset Icon Layout", onSelect: resetLayout },
       "separator",
-      { label: "Classic Portfolio View", onSelect: () => window.location.assign(classicHref) },
+      { label: "Switch to Simple View", onSelect: () => window.location.assign(classicHref) },
     );
     os.openContextMenu({ x: e.clientX, y: e.clientY, items, label: "Desktop options" });
   };
@@ -197,10 +196,8 @@ export default function DesktopIcons() {
               onPointerDown={onPointerDown(icon)}
               onClick={() => {
                 if (justDragged.current) return;
-                if (os.isTouch) open(icon);
-                else setSelected(icon.id);
+                open(icon);
               }}
-              onDoubleClick={() => open(icon)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -209,7 +206,7 @@ export default function DesktopIcons() {
               }}
               onFocus={() => setSelected(icon.id)}
               onContextMenu={onContextMenu(icon)}
-              aria-label={`${icon.label}. Double-click or press Enter to open.`}
+              aria-label={icon.label}
             >
               <AppIcon app={icon.icon} size={54} className="deskGlyph" />
               <span className="deskLabel">{icon.label}</span>

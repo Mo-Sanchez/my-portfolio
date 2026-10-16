@@ -14,7 +14,7 @@ type PaneId = "appearance" | "wallpaper" | "dock" | "motion" | "about";
 const panes: { id: PaneId; label: string; short: string }[] = [
   { id: "appearance", label: "Appearance", short: "Appearance" },
   { id: "wallpaper", label: "Wallpaper", short: "Wallpaper" },
-  { id: "dock", label: "Dock", short: "Dock" },
+  { id: "dock", label: "Dock & Windows", short: "Dock" },
   { id: "motion", label: "Motion & Accessibility", short: "Motion" },
   { id: "about", label: "About MoOS", short: "About" },
 ];
@@ -229,23 +229,36 @@ function WallpaperPane() {
 function DockPane() {
   const { settings, updateSettings } = useOS();
   return (
-    <Group title="Dock">
-      <Row title="Icon size">
-        <RadioGroup<Prefs["dockSize"]>
-          label="Dock icon size"
-          value={settings.dockSize}
-          onChange={(v) => updateSettings({ dockSize: v })}
-          options={[
-            { value: "small", label: "Small" },
-            { value: "medium", label: "Medium" },
-            { value: "large", label: "Large" },
-          ]}
-        />
-      </Row>
-      <Row title="Magnification" description="Enlarge icons as the pointer moves across the dock.">
-        <Switch checked={settings.dockMagnify} onChange={(v) => updateSettings({ dockMagnify: v })} label="Dock magnification" />
-      </Row>
-    </Group>
+    <>
+      <Group title="Dock">
+        <Row title="Icon size">
+          <RadioGroup<Prefs["dockSize"]>
+            label="Dock icon size"
+            value={settings.dockSize}
+            onChange={(v) => updateSettings({ dockSize: v })}
+            options={[
+              { value: "small", label: "Small" },
+              { value: "medium", label: "Medium" },
+              { value: "large", label: "Large" },
+            ]}
+          />
+        </Row>
+        <Row title="Magnification" description="Enlarge icons as the pointer moves across the dock.">
+          <Switch checked={settings.dockMagnify} onChange={(v) => updateSettings({ dockMagnify: v })} label="Dock magnification" />
+        </Row>
+        <Row title="Labels" description="Show each app's name under its icon.">
+          <Switch checked={settings.dockLabels} onChange={(v) => updateSettings({ dockLabels: v })} label="Dock labels" />
+        </Row>
+      </Group>
+      <Group title="Windows">
+        <Row
+          title="One window at a time"
+          description="Opening something hides the other windows; closing it brings back the one before. Turn off to arrange several windows side by side."
+        >
+          <Switch checked={settings.singleWindow} onChange={(v) => updateSettings({ singleWindow: v })} label="One window at a time" />
+        </Row>
+      </Group>
+    </>
   );
 }
 
@@ -274,11 +287,6 @@ function MotionPane() {
               { value: "reduced", label: "Reduced" },
             ]}
           />
-        </Row>
-      </Group>
-      <Group title="Desktop">
-        <Row title="Welcome widget" description="Show the introduction card with quick links on the desktop.">
-          <Switch checked={settings.showWelcome} onChange={(v) => updateSettings({ showWelcome: v })} label="Show welcome widget" />
         </Row>
       </Group>
     </>

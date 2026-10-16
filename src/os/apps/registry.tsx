@@ -17,6 +17,7 @@ type AppComponent = LazyExoticComponent<ComponentType<AppProps>>;
 
 // Each app is code-split and only downloaded the first time it opens.
 export const appComponents: Record<AppId, AppComponent> = {
+  home: lazy(() => import("./home/Home")),
   finder: lazy(() => import("./finder/Finder")),
   about: lazy(() => import("./about/About")),
   experience: lazy(() => import("./experience/Experience")),
@@ -45,7 +46,7 @@ export function titleOf(appId: AppId, route: string) {
   if (appId === "finder") {
     const labels = labelPath(splitPath(route));
     if (labels.length) return labels[labels.length - 1];
-    return "Home";
+    return "All Files";
   }
   return appMeta[appId].title;
 }

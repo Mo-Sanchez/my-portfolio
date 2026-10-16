@@ -7,11 +7,6 @@ export default function Hero() {
     <section id="home" className="hero" aria-labelledby="hero-heading">
       <div className="container heroGrid">
         <div className="heroText">
-          <p className="status">
-            <span className="statusDot" aria-hidden="true" />
-            {profile.status}
-          </p>
-
           <h1 id="hero-heading">
             <span className="heroName">{profile.name}</span>
             <span className="heroHeadline">{profile.headline}</span>

@@ -94,7 +94,7 @@ function projectGroups(folder: FolderNode): FolderNode[] | null {
 }
 
 const sidebar: { label: string; path: string; icon: IconKind }[] = [
-  { label: "Home", path: "", icon: "finder" },
+  { label: "All Files", path: "", icon: "finder" },
   { label: "Desktop", path: "desktop", icon: "folder" },
   { label: "Projects", path: "projects", icon: "folder" },
   { label: "Documents", path: "documents", icon: "folder" },
@@ -283,7 +283,7 @@ export default function Finder({ route, setRoute }: AppProps) {
   const activePath = folderPath;
   let status = plural(entries.length, "item");
   if (grouped && groups) status = `${plural(entries.length, "project")} in ${plural(groups.length, "folder")}`;
-  if (query) status = `${plural(entries.length, "result")} in ${labels[labels.length - 1] || "Home"}`;
+  if (query) status = `${plural(entries.length, "result")} in ${labels[labels.length - 1] || "All Files"}`;
 
   const renderGrid = (items: Entry[]) => (
     <ul className="finderGrid" role="listbox" aria-label="Items">
@@ -298,10 +298,9 @@ export default function Finder({ route, setRoute }: AppProps) {
             aria-selected={selected === key}
             className={cx("gridItem", project && "isProject", selected === key && "isSelected")}
             onClick={() => {
-              if (os.isTouch || os.isMobile) open(entry);
-              else setSelected(key);
+              setSelected(key);
+              open(entry);
             }}
-            onDoubleClick={() => open(entry)}
             onContextMenu={itemMenu(entry)}
             title={entry.node.label}
           >
@@ -334,7 +333,7 @@ export default function Finder({ route, setRoute }: AppProps) {
         </div>
 
         <nav className="crumbs" aria-label="Folder path">
-          <button type="button" className="crumb" onClick={() => navigate("")} aria-label="Home">
+          <button type="button" className="crumb" onClick={() => navigate("")} aria-label="All Files">
             <HomeIcon width={14} height={14} />
           </button>
           {labels.map((label, i) => (
@@ -424,7 +423,7 @@ export default function Finder({ route, setRoute }: AppProps) {
           onPointerDown={(e) => {
             if (!(e.target as HTMLElement).closest("[data-entry]")) setSelected(null);
           }}
-          aria-label={`${labels[labels.length - 1] || "Home"} contents`}
+          aria-label={`${labels[labels.length - 1] || "All Files"} contents`}
         >
           {current.description && !query && <p className="folderNote">{current.description}</p>}
 
@@ -478,7 +477,7 @@ export default function Finder({ route, setRoute }: AppProps) {
                 {entries.map((entry) => {
                   const key = entry.path.join("/");
                   let detail = detailOf(entry.node);
-                  if (query) detail = labelPath(entry.path.slice(0, -1)).join(" › ") || "Home";
+                  if (query) detail = labelPath(entry.path.slice(0, -1)).join(" › ") || "All Files";
                   if (grouped) detail = labelPath(entry.path.slice(0, -1)).pop() || "";
                   return (
                     <tr
@@ -487,10 +486,9 @@ export default function Finder({ route, setRoute }: AppProps) {
                       aria-selected={selected === key}
                       className={cx(selected === key && "isSelected")}
                       onClick={() => {
-                        if (os.isTouch || os.isMobile) open(entry);
-                        else setSelected(key);
+                        setSelected(key);
+                        open(entry);
                       }}
-                      onDoubleClick={() => open(entry)}
                       onContextMenu={itemMenu(entry)}
                     >
                       <td>
@@ -514,7 +512,7 @@ export default function Finder({ route, setRoute }: AppProps) {
 
       <footer className="finderStatus" aria-live="polite">
         <span>{status}</span>
-        {selectedEntry && <span className="faint">“{selectedEntry.node.label}” selected · double-click or press Enter to open</span>}
+        {selectedEntry && <span className="faint">“{selectedEntry.node.label}” selected · click or press Enter to open</span>}
       </footer>
     </div>
   );

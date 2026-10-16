@@ -12,8 +12,8 @@ import { appMeta, isAppId, windowIdFor, type AppId } from "../apps/meta";
 import type { OpenTarget } from "../fs";
 import { useMediaQuery } from "../lib/hooks";
 import { copyText, loadJSON, saveJSON } from "../lib/util";
-import { DOCK_RESERVE, MENUBAR_H, OSContext, type ContextMenuState, type Notice, type OSAction, type OSValue } from "./os";
-import { formatHash, parseHash, sameTarget, type Target } from "./router";
+import { dockReserve, MENUBAR_H, OSContext, type ContextMenuState, type Notice, type OSAction, type OSValue } from "./os";
+import { formatHash, HOME, hrefOf, sameTarget, targetOfHash, type Target } from "./router";
 import {
   accents,
   defaultSettings,
@@ -41,15 +41,24 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
   const isTouch = useMediaQuery("(pointer: coarse)");
   const theme = resolveTheme(settings.theme, systemDark);
   const motion = resolveMotion(settings.motion, systemReduced);
+  const reserve = dockReserve(settings.dockSize, settings.dockLabels);
+  // Phones always show one full-screen app, so single-window mode is desktop only.
+  const solo = settings.singleWindow && !isMobile;
 
   // Refs let stable callbacks read the latest values without re-creating.
   const wmRef = useRef(wm);
   const motionRef = useRef(motion);
   const titleOfRef = useRef(titleOf);
+  const reserveRef = useRef(reserve);
+  const soloRef = useRef(solo);
+  const isMobileRef = useRef(isMobile);
   useEffect(() => {
     wmRef.current = wm;
     motionRef.current = motion;
     titleOfRef.current = titleOf;
+    reserveRef.current = reserve;
+    soloRef.current = solo;
+    isMobileRef.current = isMobile;
   });
 
   // ---- Appearance ---------------------------------------------------------
@@ -59,6 +68,8 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
     root.dataset.motion = motion;
     root.dataset.transparency = settings.transparency;
     root.dataset.dock = settings.dockSize;
+    root.dataset.dockLabels = String(settings.dockLabels);
+    root.style.setProperty("--dock-reserve", `${reserve}px`);
     const accent = accents.find((a) => a.id === settings.accent) || accents[0];
     let accentColor = accent.dark;
     if (theme === "light") accentColor = accent.light;
@@ -70,7 +81,7 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
       if (theme === "light") color = "#e8ede9";
       meta.setAttribute("content", color);
     }
-  }, [theme, motion, settings.transparency, settings.dockSize, settings.accent]);
+  }, [theme, motion, settings.transparency, settings.dockSize, settings.dockLabels, settings.accent, reserve]);
 
   const updateSettings = useCallback((patch: Partial<Settings>) => {
     setSettings((s) => {
@@ -107,7 +118,7 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
 
   // ---- Windows ------------------------------------------------------------
   const desktopSize = useCallback(() => {
-    return { width: window.innerWidth, height: Math.max(window.innerHeight - MENUBAR_H - DOCK_RESERVE, 240) };
+    return { width: window.innerWidth, height: Math.max(window.innerHeight - MENUBAR_H - reserveRef.current, 240) };
   }, []);
 
   const rememberRect = useCallback((appId: string, rect: Rect) => {
@@ -123,6 +134,15 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
       const meta = appMeta[appId];
       const remembered = loadJSON<Record<string, Rect>>(RECTS_KEY, {})[appId];
       if (remembered && typeof remembered.x === "number") return clampRect(remembered, width, height);
+      if (soloRef.current) {
+        // One window at a time: open large and centred, like a page, leaving
+        // the desktop icon column on the right uncovered.
+        const w = Math.min(Math.round(meta.size.w * 1.2), 1120, width - 240);
+        const h = Math.min(Math.round(meta.size.h * 1.12), 780, height - 24);
+        const x = Math.round((width - w) / 2);
+        const y = Math.max(8, Math.round((height - h) / 2.6));
+        return clampRect({ x, y, w, h }, width, height);
+      }
       const w = Math.min(meta.size.w, width - 32);
       const h = Math.min(meta.size.h, height - 24);
       // Cascade new windows so they don't stack exactly on top of each other.
@@ -139,11 +159,12 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
   );
 
   const openApp = useCallback(
-    (appId: AppId, route = "") => {
+    (appId: AppId, requested = "", opts: { quiet?: boolean } = {}) => {
+      const route = requested || appMeta[appId].defaultRoute || "";
       const id = windowIdFor(appId, route);
       const existing = wmRef.current.windows[id];
       if (existing && !existing.closing) {
-        dispatch({ type: "focus", id });
+        dispatch({ type: "focus", id, solo: soloRef.current });
         if (route !== existing.route && !appMeta[appId].perRoute) {
           dispatch({ type: "setRoute", id, route, title: titleOfRef.current(appId, route) });
         }
@@ -159,12 +180,14 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
         title: titleOfRef.current(appId, route),
         rect: defaultRect(appId),
         maximized: tablet,
+        solo: soloRef.current,
+        quiet: opts.quiet,
       });
     },
     [defaultRect, desktopSize],
   );
 
-  const focusWindow = useCallback((id: string) => dispatch({ type: "focus", id }), []);
+  const focusWindow = useCallback((id: string) => dispatch({ type: "focus", id, solo: soloRef.current }), []);
   const minimizeWindow = useCallback((id: string) => dispatch({ type: "minimize", id }), []);
   const toggleMaximize = useCallback((id: string) => dispatch({ type: "toggleMaximize", id }), []);
   const snapWindow = useCallback((id: string, side: Snap) => dispatch({ type: "snap", id, side }), []);
@@ -197,6 +220,12 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
   const setWindowRoute = useCallback((id: string, route: string, title?: string) => {
     dispatch({ type: "setRoute", id, route, title });
   }, []);
+
+  // Keep windows clear of the dock when its size or labels change.
+  useEffect(() => {
+    const { width, height } = desktopSize();
+    dispatch({ type: "clamp", width, height });
+  }, [reserve, desktopSize]);
 
   // Keep windows reachable when the browser window shrinks.
   useEffect(() => {
@@ -269,35 +298,58 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
     return { appId: focusedWin.appId, route: focusedWin.route };
   }, [focusedWin]);
 
+  // The window a link is opening; the hash isn't rewritten until it exists.
+  const pendingRef = useRef<Target | null>(null);
+
+  // A bare URL opens Home (on phones the home screen already plays that role).
   useEffect(() => {
-    const applyHash = () => {
-      const target = parseHash(window.location.hash);
-      if (target && isAppId(target.appId)) openApp(target.appId, target.route);
-      else dispatch({ type: "blur" });
+    const applyHash = (landing: boolean) => {
+      let target = targetOfHash(window.location.hash);
+      // An unknown link on arrival lands on Home rather than an empty desktop.
+      if (!target && landing) target = HOME;
+      if (target && sameTarget(target, HOME) && isMobileRef.current) target = null;
+      if (target && isAppId(target.appId)) {
+        pendingRef.current = { appId: target.appId, route: target.route || appMeta[target.appId].defaultRoute || "" };
+        openApp(target.appId, target.route, { quiet: landing });
+      } else {
+        pendingRef.current = null;
+        dispatch({ type: "blur" });
+      }
     };
-    applyHash();
-    window.addEventListener("popstate", applyHash);
-    return () => window.removeEventListener("popstate", applyHash);
+    const onPop = () => applyHash(false);
+    applyHash(true);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
   }, [openApp]);
 
   useEffect(() => {
-    const current = parseHash(window.location.hash);
-    const hash = formatHash(focusedTarget);
+    const pending = pendingRef.current;
+    if (pending) {
+      const opened = wmRef.current.windows[windowIdFor(pending.appId as AppId, pending.route)];
+      // Still opening: leave the URL alone so the link isn't overwritten.
+      if (!opened && !sameTarget(pending, focusedTarget)) return;
+      pendingRef.current = null;
+    }
+    let current = targetOfHash(window.location.hash);
+    let hash = formatHash(focusedTarget);
+    // On phones the home screen is Home, so it also lives at the bare URL.
+    if (isMobileRef.current) {
+      if (!focusedTarget) hash = "";
+      if (sameTarget(current, HOME)) current = null;
+    }
     let valid: Target | null = null;
     if (current && isAppId(current.appId)) valid = current;
 
     if (sameTarget(valid, focusedTarget)) {
       // Already in sync (e.g. after Back/Forward); just normalize legacy anchors.
-      if (window.location.hash && window.location.hash !== hash) window.history.replaceState(window.history.state, "", hash);
+      if (window.location.hash !== hash) window.history.replaceState(window.history.state, "", hrefOf(hash));
       return;
     }
     if (current && !valid) {
-      window.history.replaceState(window.history.state, "", hash);
+      window.history.replaceState(window.history.state, "", hrefOf(hash));
       return;
     }
-    // A deep link whose window hasn't been created yet: wait for it.
-    if (valid && isAppId(valid.appId) && !wmRef.current.windows[windowIdFor(valid.appId, valid.route)]) return;
-    window.history.pushState(window.history.state, "", hash);
+    window.history.pushState(window.history.state, "", hrefOf(hash));
   }, [focusedTarget]);
 
   // Window title follows the focused app, like a real OS.
@@ -320,6 +372,7 @@ export function OSProvider({ children, titleOf }: { children: ReactNode; titleOf
     toasts,
     launcherOpen,
     contextMenu,
+    dockReserve: reserve,
     desktopSize,
     openApp,
     openTarget,
